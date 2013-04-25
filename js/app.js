@@ -1,6 +1,6 @@
 App = Ember.Application.create({
   ready: function() {
-    this.set('usaStatesGeoData', usaStatesGeoData);
+    this.set('usStates', usStates);
   }
 });
 
@@ -15,9 +15,9 @@ App.IndexRoute = Ember.Route.extend({
 
 App.Map = Ember.View.extend({
   path: function() {
-    var mapW  = this.$().height();
-    var mapH  = this.$().width();
-    var mapXY = d3.geo.albersUsa().scale(700).translate([mapH/2,mapW/2]);
+    var h  = this.$().height();
+    var w  = this.$().width();
+    var mapXY = d3.geo.albersUsa().scale(1000).translate( [ w/2, h/2 ] );
 
     return d3.geo.path().projection(mapXY);
   }.property(),
@@ -26,6 +26,7 @@ App.Map = Ember.View.extend({
     var elementId = this.get('elementId');
     var regions = d3.select("#" + elementId).append("svg").append("g").attr("id", "regions");
     var features = this.get('geoData').features;
+    console.log('features', features)
     var path = this.get('path');
 
     regions.selectAll("#regions path").data(features).enter().insert("path")

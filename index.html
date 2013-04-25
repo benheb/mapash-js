@@ -2,21 +2,34 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Ember Starter Kit</title>
+<title>MapAsh JS</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <script type="text/x-handlebars">
-    <h2>MapAsh JS</h2>
-    <span>Maps with d3 and Ember</span>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="#">MapAsh JS</a>
+            <ul class="nav pull-right">
+              <li>
+                <a href="/" class="brand sub-brand">Maps with d3.js and Ember.js</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>  
+    </div>
 
     {{outlet}}
   </script>
 
   <script type='text/x-handlebars' data-template-name="index">
-    {{view App.Map geoDataBinding="App.usaStatesGeoData"}}
+    {{view App.Map geoDataBinding="App.usStates"}}
     
   </script>
   
