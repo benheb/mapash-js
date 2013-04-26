@@ -1,4 +1,4 @@
-MapAsh JS
+Map Ash JS
 ==========
 
 Maps. Ember. Javascript.
