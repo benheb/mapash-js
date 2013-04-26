@@ -7,66 +7,40 @@
   <link rel="stylesheet" href="http://developers.arcgis.com/css/home.css">
   <link rel="stylesheet" href="http://developers.arcgis.com/css/screen.css">
   <link rel="stylesheet" href="https://raw.github.com/ArcGIS/arcgis-for-developers-css/master/css/arcgis.css?login=chelm&token=d50f1218ba57a98801bdd79bcbfd7cde">
-  <!--link rel="stylesheet" href="https://raw.github.com/ArcGIS/arcgis-for-developers-css/master/examples/static_html/css/arcgis.min.css?login=chelm&token=1cc59760339ac4fe4a687a0cb09ad5e8"-->
-  <!--link rel="stylesheet" href="css/normalize.css"-->
-  <!--link rel="stylesheet" href="css/style.css"-->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!--script type="text/x-handlebars">
+  <script type="text/x-handlebars">
     <header id="header">
-    <div class="container">
-      <div class="header-inner responsive">
-        <a id="site-logo">Arc<span>GIS</span> Composer</a>
-        <nav>
-          <ul>
-          </ul>
-        </nav>
+      <div class="container">
+        <div class="header-inner responsive">
+          <a id="site-logo">Arc<span>GIS</span> Composer</a>
+          <nav>
+            <ul>
+            </ul>
+          </nav>
+        </div>
       </div>
-    </div>
     </header>
 
-  
-    {{outlet}}
-  </script-->
-
-
-  <!--script type='text/x-handlebars' data-template-name="index">
-      {{view App.Map geoDataBinding="App.usStates"}}
-  </script>
-
-  <script type='text/x-handlebars' data-template-name="sidebar">
-      :wq<div id="sidebar" class="">
-        {{ view App.SideBarView }}
-      </div>
-  </script-->
-
-  <script type="text/x-handlebars" data-template-name="main" >
-    <header id="header">
-    <div class="container">
-      <div class="header-inner responsive">
-        <a id="site-logo">Arc<span>GIS</span> Composer</a>
-        <nav>
-          <ul>
-          </ul>
-        </nav>
-      </div>
+    <div id="wrapper">
+      {{outlet}}
     </div>
-    </header>
-    {{view App.Map geoDataBinding="App.usStates"}}
-    {{view App.Sidebar}}
-    //{{outlet contentView}}
-    //{{outlet sidebarView}}
+
   </script>
-  
-  <script type="text/x-handlebars" data-template-name="sidebar" >
-      <div id="sidebar" style="border:4px solid red;"> sidebar </div>
+
+
+  <script type='text/x-handlebars' data-template-name="index">
+      <div id="map">
+        {{view App.Map geoDataBinding="App.usStates"}}
+      </div>
+      <div id="sidebar">
+        {{view App.Sidebar}}
+      </div>
   </script>
-  
-  <script type="text/x-handlebars" data-template-name="content" >
-      content
-  </script>
-  
+
 
   <script src="js/us-states.js"></script>
   <script src="js/libs/jquery-1.9.1.js"></script>

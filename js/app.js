@@ -1,40 +1,22 @@
+
 App = Ember.Application.create({
   ready: function() {
     this.set('usStates', usStates);
   }
 });
 
-/*App.Router.map(function() {
+App.Router.map(function() {
   // put your routes here
 });
 
-App.IndexRoute = Ember.Route.extend({
+
+App.SidebarRoute = Ember.Route.extend({
   //nothing
-});*/
-
-App.viewController = Ember.Object.create({
-    sidebarView: Ember.View.create({
-        templateName: 'sidebar'
-    }),
-    contentView: Ember.View.create({
-        templateName: 'content'
-    })
 });
-
-Ember.View.create({
-    controllerBinding: 'App.viewController',
-    templateName: 'main'
-}).append();
-
-/*Ember.run.later(function(){
-    App.viewController.set('contentView', Ember.View.create({
-        templateName: 'new-content'
-    }));
-}, 1000);*/
-
 
 
 App.Map = Ember.View.extend({
+  classNames: ['map'],
   path: function() {
     var h  = this.$().height();
     var w  = this.$().width();
@@ -47,13 +29,20 @@ App.Map = Ember.View.extend({
     var elementId = this.get('elementId');
     var regions = d3.select("#" + elementId).append("svg").append("g").attr("id", "regions");
     var features = this.get('geoData').features;
-    console.log('features', features)
+    console.log('features', elementId, features)
     var path = this.get('path');
 
     regions.selectAll("#regions path").data(features).enter().insert("path")
       .attr("d",      path)
       .attr('stroke', '#ccc'  )
       .attr('fill',   'white' );
+  }
+});
+
+App.Sidebar = Ember.View.extend({
+  didInsertElement: function() {
+    var elementId = this.get('elementId');
+    console.log('sidebar', elementId)
   }
 });
 
