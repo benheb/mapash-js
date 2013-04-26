@@ -4,13 +4,34 @@ App = Ember.Application.create({
   }
 });
 
-App.Router.map(function() {
+/*App.Router.map(function() {
   // put your routes here
 });
 
 App.IndexRoute = Ember.Route.extend({
   //nothing
+});*/
+
+App.viewController = Ember.Object.create({
+    sidebarView: Ember.View.create({
+        templateName: 'sidebar'
+    }),
+    contentView: Ember.View.create({
+        templateName: 'content'
+    })
 });
+
+Ember.View.create({
+    controllerBinding: 'App.viewController',
+    templateName: 'main'
+}).append();
+
+/*Ember.run.later(function(){
+    App.viewController.set('contentView', Ember.View.create({
+        templateName: 'new-content'
+    }));
+}, 1000);*/
+
 
 
 App.Map = Ember.View.extend({
@@ -35,3 +56,4 @@ App.Map = Ember.View.extend({
       .attr('fill',   'white' );
   }
 });
+
