@@ -1,3 +1,4 @@
+
 App = Ember.Application.create({
   ready: function() {
     this.set('usStates', usStates);
@@ -8,12 +9,14 @@ App.Router.map(function() {
   // put your routes here
 });
 
-App.IndexRoute = Ember.Route.extend({
+
+App.SidebarRoute = Ember.Route.extend({
   //nothing
 });
 
 
 App.Map = Ember.View.extend({
+  classNames: ['map'],
   path: function() {
     var h  = this.$().height();
     var w  = this.$().width();
@@ -26,7 +29,7 @@ App.Map = Ember.View.extend({
     var elementId = this.get('elementId');
     var regions = d3.select("#" + elementId).append("svg").append("g").attr("id", "regions");
     var features = this.get('geoData').features;
-    console.log('features', features)
+    console.log('features', elementId, features)
     var path = this.get('path');
 
     regions.selectAll("#regions path").data(features).enter().insert("path")
@@ -35,3 +38,11 @@ App.Map = Ember.View.extend({
       .attr('fill',   'white' );
   }
 });
+
+App.Sidebar = Ember.View.extend({
+  didInsertElement: function() {
+    var elementId = this.get('elementId');
+    console.log('sidebar', elementId)
+  }
+});
+
