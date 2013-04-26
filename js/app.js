@@ -1,37 +1,47 @@
-App = Ember.Application.create({
-  ready: function() {
-    this.set('usStates', usStates);
+
+// Define libraries
+require.config({
+  baseUrl: 'js/',
+  paths: {
+    d3: 'libs/d3', 
+    d3geo: 'libs/d3.geo',
+    jquery: 'libs/jquery-1.9.1',
+    ember: 'libs/ember-latest.min',
+    //ember: 'libs/ember-1.0.0-rc.3',
+    handlebars: 'libs/handlebars-1.0.0-rc.3',
+    text: 'libs/text',
+    jasmine: 'lib/jasmine/jasmine',
+    jasmine_html: 'lib/jasmine/jasmine-html'
   }
 });
 
-App.Router.map(function() {
-  // put your routes here
-});
+// Load our app
+define( 'app', [
+  'app/router',
+  'app/models/store',
+  'app/controllers/layers',
+  'app/views/application',
+  'jquery',
+  'handlebars',
+  'ember'
+  ], function( Router, Store, LayersController, ApplicationView ) {
+    var App = Ember.Application.create({
+      VERSION: '0.1.0',
+      rootElement: '#map_app',
+      // Load routes
+      Router: Router,
+      // Extend to inherit outlet support
+      ApplicationController: Ember.Controller.extend(),
+      ApplicationView: ApplicationView,
+      /*layersController: LayersController.create({
+        store: new Store('layers')
+      }),*/
+      ready: function() {
+        this.initialize();
+      }
+    });
 
-App.IndexRoute = Ember.Route.extend({
-  //nothing
-});
-
-
-App.Map = Ember.View.extend({
-  path: function() {
-    var h  = this.$().height();
-    var w  = this.$().width();
-    var mapXY = d3.geo.albersUsa().scale(1000).translate( [ w/2, h/2 ] );
-
-    return d3.geo.path().projection(mapXY);
-  }.property(),
-  
-  didInsertElement: function() {
-    var elementId = this.get('elementId');
-    var regions = d3.select("#" + elementId).append("svg").append("g").attr("id", "regions");
-    var features = this.get('geoData').features;
-    console.log('features', features)
-    var path = this.get('path');
-
-    regions.selectAll("#regions path").data(features).enter().insert("path")
-      .attr("d",      path)
-      .attr('stroke', '#ccc'  )
-      .attr('fill',   'white' );
+    // Expose the application globally
+    return window.Map = App;
   }
-});
+);
