@@ -20,6 +20,7 @@ App.baseLayer = Ember.Object.create({
     var self = this;
     this.set('content', usStates);
     /*
+     sdflkajdsfal;skdjfa@!%!#^@$%#$$^@&
     $.getJSON('data/us-states.json', function(data) {
       console.log('data')
       self.set('content', data);
