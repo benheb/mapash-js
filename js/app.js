@@ -18,24 +18,21 @@ require.config({
 // Load our app
 define( 'app', [
   'app/router',
-  'app/models/store',
-  'app/controllers/layers',
+  'app/controllers/basedata',
   'app/views/application',
   'jquery',
   'handlebars',
   'ember'
-  ], function( Router, Store, LayersController, ApplicationView ) {
+  ], function( Router, BaseData, ApplicationView ) {
     var App = Ember.Application.create({
       VERSION: '0.1.0',
       rootElement: '#map_app',
-      // Load routes
       Router: Router,
       // Extend to inherit outlet support
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
-      /*layersController: LayersController.create({
-        store: new Store('layers')
-      }),*/
+      BaseData: BaseData.create({path : 'data/us-states.json'}),        
+      //store: new BaseData('data/us-states.json')
       ready: function() {
         this.initialize();
       }
