@@ -41,4 +41,3 @@ define( 'app', [
     return window.Map = App;
   }
 );
->>>>>>> chelm
