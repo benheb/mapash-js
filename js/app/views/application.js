@@ -1,5 +1,6 @@
 define('app/views/application', [
 		'app/views/sidebar',
+		'app/views/layers',
 		'app/views/map',
 		'text!app/templates/header.html',
 		'ember'
@@ -10,7 +11,7 @@ define('app/views/application', [
 	 * @param Class StatsView, stats view class
 	 * @returns Class
 	 */
-	function( SidebarView, MapView, header_html ) {
+	function( SidebarView, LayersView, MapView, header_html ) {
 		return Ember.ContainerView.extend({
 				childViews: [ 'headerView', 'mainView' ],
 				headerView: Ember.ContainerView.create({
@@ -25,11 +26,7 @@ define('app/views/application', [
           template: Ember.Handlebars.compile("<div class='row'>{{yield}}</div>"),
 					elementId: 'map_main',
 					classNames: ['container'],
-          childViews: ['rowView'],
-          rowView: Ember.ContainerView.create({ 
-					  classNames: ['row'],
-					  childViews: [ SidebarView.create(), MapView.create() ]
-          })
+				  childViews: [ SidebarView.create(), LayersView.create(), MapView.create() ]
 				})
 			})
 	}

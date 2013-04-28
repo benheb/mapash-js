@@ -10,9 +10,9 @@ define('app/views/sidebar', [
 	 */
 	function( sidebar_html ) {
 		return Ember.View.extend({
-      classNames: ['column-6'],
+      classNames: [''],
 			elementId: 'sidebar',
-			tagName: 'aside',
+			tagName: 'div',
 			template: Ember.Handlebars.compile( sidebar_html )
 		})
 	}

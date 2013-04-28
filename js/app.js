@@ -17,7 +17,7 @@ require.config({
 // Load our app
 define( 'app', [
   'app/router',
-  'app/controllers/basedata',
+  'app/models/basedata',
   'app/views/application',
   'jquery',
   'handlebars',
@@ -31,7 +31,6 @@ define( 'app', [
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
       BaseData: BaseData.create({path : 'data/us-states.json'}),        
-      //store: new BaseData('data/us-states.json')
       ready: function() {
         this.initialize();
       }

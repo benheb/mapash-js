@@ -10,12 +10,12 @@ define('app/views/map', [
 	 */
 	function( map_html ) {
 		return Ember.View.extend({
-			//layersBinding: 'controller.namespace.layerController',
+      basedataBinding: 'controller.namespace.BaseData',
 			elementId: 'map',
-      classNames: ['column-20 map'],
-			tagName: 'main',
+      classNames: [''],
+      baseId: '#base',
 			template: Ember.Handlebars.compile( map_html ),
-
+      
       path: function() {
         var h  = this.$().height();
         var w  = this.$().width();
@@ -24,37 +24,44 @@ define('app/views/map', [
         return d3.geo.path().projection( this.proj );
       }.property(),
 
-      didInsertElement: function() {
-        var view = this;
-        var el = this.get('elementId');
-        setTimeout(function(){
-          view.features = Map.BaseData.features;
-          view.path = view.get('path');
-          
-          view.regions = d3.select( "#" + el ).append("svg")
-            .call(d3.behavior.zoom()
-              .translate(view.proj.translate())
-              .scale(view.proj.scale())
-              .on("zoom", function( z ) {
-                  view.redraw(view);
-                })
-              );
-             
-          view.regions.selectAll("#regions path")
-            .data(view.features)
+      updateBase: function(){
+        this.layers.selectAll(this.baseId +" path").remove();
+
+        this.layers.selectAll( this.baseId +" path")
+            .data(this.get('basedata').features)
           .enter().append("path")
             .attr("id", "regions")
-            .attr("d", view.get('path'))
+            .attr("d", this.get('path'))
             .attr('stroke', '#ccc'  )
             .attr('fill',   'white' );
-          
-          //mousewheel zoom
-          view.$().on('mousewheel', function( event, delta, deltaX, deltaY ) {
-            view.zoom( event, delta, deltaX, deltaY, view )
-          });
-        }, 500);
-    
       },
+
+      didInsertElement: function() {
+        var view = self = this;
+
+        Map.BaseData.on('update', function(){
+          self.updateBase(); 
+        })
+
+        var el = this.get('elementId');
+        view.path = view.get('path');
+        
+        view.layers = d3.select( "#" + el ).append("svg")
+          .call(d3.behavior.zoom()
+            .translate(view.proj.translate())
+            .scale(view.proj.scale())
+            .on("zoom", function( z ) {
+                view.redraw(view);
+              })
+            );
+           
+        //mousewheel zoom
+        view.$().on('mousewheel', function( event, delta, deltaX, deltaY ) {
+          view.zoom( event, delta, deltaX, deltaY, view )
+        });
+
+      },
+
 
       zoom: function( event, delta, deltaX, deltaY, view) {
         var s = view.proj.scale();
@@ -64,7 +71,7 @@ define('app/views/map', [
           view.proj.scale( s * 0.9 );
         }
         
-        view.regions.selectAll("path").attr("d", view.get('path'))
+        view.layers.selectAll("path").attr("d", view.get('path'))
       },
       
       redraw: function( view ) {
@@ -73,7 +80,7 @@ define('app/views/map', [
             .translate(d3.event.translate)
             .scale(d3.event.scale);
         }
-        view.regions.selectAll("path").attr("d", view.get('path'));
+        view.layers.selectAll("path").attr("d", view.get('path'));
       }
 
   

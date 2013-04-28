@@ -1,26 +1,25 @@
 define('app/models/basedata', [
-		'app/models/geojson',
 		'ember'
 	],
 	/**
-	 * Todo entries storage model
+	 * Basedata storage model
 	 *
-	 * @param Class Todo, the todo entry model
+	 * @param Class basedata, the base data feature model
 	 * @returns Class
 	 */
-	function( GeoJSON ) {
-		return function( path ) {
-      var self = this;
-			this.path = path;
-      
-      //require(['text!' + path], function( data ){
-			  //self.data = data;
+	function( ) {
+    return Ember.Object.extend( Ember.Evented, {
+      path: null,
+      features: [],
 
-			  this.findAll = function() {
-				  return []; //self.data.features;
-			  };
-
-      //});
-		};
+      init: function( path ) {
+        var self = this;
+        d3.json( this.path, function( data ){
+          self.features = data.features;
+          console.log('triggering update', self.features );
+          self.trigger('update');
+        });
+      }
+		});
 	}
 );
