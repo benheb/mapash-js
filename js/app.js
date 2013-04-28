@@ -1,4 +1,3 @@
-
 App = Ember.Application.create({
   ready: function() {
     this.baseLayer.get();
