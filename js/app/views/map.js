@@ -35,7 +35,7 @@ define('app/views/map', [
         
         var world = this.get('basedata').data;
         
-        console.log('world', world, 'what', world.objects.ne_10m_rivers_lakes_centerlines)
+        console.log('world', world)
         this.layers.insert("path")
           .datum(topojson.object(world, world.objects.ne_110m_land))
           .attr("id", "regions")
