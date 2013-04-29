@@ -35,7 +35,7 @@ define( 'app', [
       BaseData: BaseData.create({path : 'data/us-states.json'}),        
       //BaseData: BaseData.create({path : 'data/us.json'}),
       layersController: LayersController.create({
-        store: new LayerStore()
+        store: new LayerStore('layers')
       }),
       ready: function() {
         this.initialize();

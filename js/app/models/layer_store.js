@@ -23,14 +23,14 @@ define('app/models/layer_store', [
 
 			// Wrapper around `this.create`
 			// Creates a `Todo` model object out of the title
-			this.createFromTitle = function( title ) {
+			/*this.createFromTitle = function( title ) {
 				var layer = Layer.create({
 					title: title,
 					store: this
 				});
 				this.create( layer );
 				return layer;
-			};
+			};*/
 
 			// Store the model inside the `Store`
 			this.create = function ( model ) {
@@ -42,7 +42,7 @@ define('app/models/layer_store', [
 			// Update a model by replacing its copy in `this.data`.
 			this.update = function( model ) {
 				this.data[ model.get( 'id' ) ] = model.getProperties(
-					'id', 'title', 'completed'
+					'id', 'title', 'path'
 				);
 				this.save();
 				return model;

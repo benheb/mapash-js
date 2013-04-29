@@ -9,11 +9,9 @@ define('app/controllers/layers', [ 'ember' ],
 			store: null,
 			content: [],
 
-			createNew: function( value ) {
-				//if ( !value.trim() )
-				//	return;
-				//var todo = this.get( 'store' ).createFromTitle( value );
-				//this.pushObject( todo );
+			createNew: function( data ) {
+				var layer = this.get( 'store' ).createFromTitle( value );
+				this.pushObject( layer );
 			},
 
 			pushObject: function( item, ignoreStorage) {
@@ -33,10 +31,10 @@ define('app/controllers/layers', [ 'ember' ],
 
 			init: function() {
 				this._super();
-				// Load items if any upon initialization
-				var items = this.get( 'store' ).findAll();
-				if ( items.get( 'length' ) ) {
-					this.set( '[]', items );
+				// Load layers if any upon initialization
+				var layers = this.get( 'store' ).findAll();
+				if ( layers.get( 'length' ) ) {
+					this.set( '[]', layers );
 				};
 			}
 		});

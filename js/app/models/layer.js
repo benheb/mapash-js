@@ -9,6 +9,7 @@ define('app/models/layer', ['ember'],
 			id: null,
 			title: null,
       path: null,
+      data: null,
 			store: null
 		});
 	}
