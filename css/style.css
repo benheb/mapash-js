@@ -35,14 +35,14 @@ html, body {
   -webkit-box-shadow: 5px 0px 3px -2px #AAA;
 }
 
-#sidebar div{
+.sidebar-item{
   height: 75px;
   text-align: center;
   border-bottom: 1px inset #777;
   line-height: 75px;
 }
 
-#sidebar div:hover {
+.sidebar-item:hover {
   cursor: pointer;
   background: #777;
   border-bottom: 1px inset #EEE;
