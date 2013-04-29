@@ -33,8 +33,7 @@ define( 'app', [
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
       //BaseData: BaseData.create({path : 'data/us-states.json'}),
-      BaseData: BaseData.create({path : 'data/world.json'}),
-      //BaseData: BaseData.create({path : 'data/lakes.json'}),        
+      BaseData: BaseData.create({path : 'data/world.json'}),     
       //BaseData: BaseData.create({path : 'data/us.json'}),
       layersController: LayersController.create({
         store: new LayerStore('layers')
