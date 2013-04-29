@@ -29,18 +29,47 @@ define('app/views/map', [
         return d3.geo.path().projection( this.proj );
       }.property(),
 
-      updateBase: function(){
+      updateBase: function( scale ){
         var self = this;
         this.layers.selectAll(this.baseId +" path").remove();
         
         var world = this.get('basedata').data;
         
-        console.log('world', world)
+        console.log('world', world, 'what', world.objects.ne_10m_rivers_lakes_centerlines)
         this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.land))
+          .datum(topojson.object(world, world.objects.ne_110m_land))
           .attr("id", "regions")
           .attr("d", this.get('path'))
-          .attr('fill',   '#444' );
+          .attr('fill', '#444' );
+        
+        this.layers.insert("path")
+          .datum(topojson.object(world, world.objects.states))
+          .attr("id", "regions")
+          .attr("d", this.get('path'))
+          .attr('fill', '#444')
+          .attr('stroke', '#777' );
+        
+        /*
+         * DETAIL
+         * 
+         */
+        if ( scale > 1500 ) {
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.counties))
+            .attr("id", "regions")
+            .attr("d", this.get('path'))
+            .attr('fill', '#444')
+            .attr('stroke', '#777');
+          
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.ne_10m_lakes))
+            .attr("id", "regions")
+            .attr("d", this.get('path'))
+            .attr('fill', '#99b3cc');
+          this._show_counties = true;
+        } else {
+          this._show_counties = false;
+        }
         
         /*
         this.layers.selectAll( this.baseId +" path")
@@ -57,8 +86,8 @@ define('app/views/map', [
         var view = self = this;
 
         Map.BaseData.on('update', function(){
-          self.updateBase(); 
-        })
+          self.updateBase( view.proj.scale() ); 
+        });
 
         var el = this.get('elementId');
         view.path = view.get('path');
@@ -88,7 +117,13 @@ define('app/views/map', [
           view.proj.scale( s * 0.9 );
         }
         
-        view.layers.selectAll("path").attr("d", view.get('path'))
+        if ( view.proj.scale() > 1500 && view._show_counties === false ) {
+          self.updateBase( view.proj.scale() );
+        } else if ( view.proj.scale() < 1500 && view._show_counties === true ) {
+          self.updateBase( view.proj.scale() );
+        }
+        
+        view.layers.selectAll("path").attr("d", view.get('path'));
       },
       
       redraw: function( view ) {
