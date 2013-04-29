@@ -56,6 +56,16 @@ html, body {
   color:#DDD;
 }
 
+.sidebar-panel {
+  width:300px;
+  height:100%;
+  color:#555;
+  position:absolute;
+  left:90px;
+  background: #fff;
+  -webkit-box-shadow: 5px 0px 3px -2px #AAA;
+}
+
 #layers {
   width:190px;
   height:100;
