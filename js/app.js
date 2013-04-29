@@ -32,7 +32,8 @@ define( 'app', [
       // Extend to inherit outlet support
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
-      BaseData: BaseData.create({path : 'data/us-states.json'}),        
+      //BaseData: BaseData.create({path : 'data/us-states.json'}),
+      BaseData: BaseData.create({path : 'data/world-110m.json'}),        
       //BaseData: BaseData.create({path : 'data/us.json'}),
       layersController: LayersController.create({
         store: new LayerStore('layers')

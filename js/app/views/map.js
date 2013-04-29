@@ -19,14 +19,25 @@ define('app/views/map', [
       path: function() {
         var h  = this.$().height();
         var w  = this.$().width();
-        this.proj = d3.geo.albersUsa().scale(1000).translate( [ w/2, h/3 ] );
+        this.proj = d3.geo.mercator().scale(1000).translate( [ w/2, h/3 ] );
     
         return d3.geo.path().projection( this.proj );
       }.property(),
 
       updateBase: function(){
+        var self = this;
         this.layers.selectAll(this.baseId +" path").remove();
-
+        
+        var world = this.get('basedata').data;
+        
+        console.log('world', world)
+        this.layers.insert("path")
+          .datum(topojson.object(world, world.objects.land))
+          .attr("id", "regions")
+          .attr("d", this.get('path'))
+          .attr('fill',   '#444' );
+        
+        /*
         this.layers.selectAll( this.baseId +" path")
             .data(this.get('basedata').features)
           .enter().append("path")
@@ -34,6 +45,7 @@ define('app/views/map', [
             .attr("d", this.get('path'))
             .attr('stroke', '#ccc'  )
             .attr('fill',   'white' );
+        */
       },
 
       didInsertElement: function() {

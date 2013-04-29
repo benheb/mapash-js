@@ -24,7 +24,8 @@ define('app/models/basedata', [
             topojson.object(data, data.objects.land), 
             topojson.object(data, data.objects.states),
             topojson.object(data, data.objects.counties)];*/
-          self.features = data.features;
+          //console.log('data', data)
+          self.data = data;
           self.update();
         });
       },
