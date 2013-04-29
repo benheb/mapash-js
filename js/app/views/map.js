@@ -49,27 +49,11 @@ define('app/views/map', [
           .attr('fill', '#444')
           .attr('stroke', '#777' );
         
-        /*
-         * DETAIL
-         * 
-         */
-        if ( scale > 1500 ) {
           this.layers.insert("path")
-            .datum(topojson.object(world, world.objects.counties))
-            .attr("id", "regions")
-            .attr("d", this.get('path'))
-            .attr('fill', '#444')
-            .attr('stroke', '#777');
-          
-          this.layers.insert("path")
-            .datum(topojson.object(world, world.objects.ne_10m_lakes))
+            .datum(topojson.object(world, world.objects.ne_50m_lakes))
             .attr("id", "regions")
             .attr("d", this.get('path'))
             .attr('fill', '#99b3cc');
-          this._show_counties = true;
-        } else {
-          this._show_counties = false;
-        }
         
         /*
         this.layers.selectAll( this.baseId +" path")
@@ -115,12 +99,6 @@ define('app/views/map', [
           view.proj.scale( s * 1.1 );
         } else {
           view.proj.scale( s * 0.9 );
-        }
-        
-        if ( view.proj.scale() > 1500 && view._show_counties === false ) {
-          self.updateBase( view.proj.scale() );
-        } else if ( view.proj.scale() < 1500 && view._show_counties === true ) {
-          self.updateBase( view.proj.scale() );
         }
         
         view.layers.selectAll("path").attr("d", view.get('path'));
