@@ -22,7 +22,7 @@ define('app/views/map', [
         this.proj = projection = d3.geo.kavrayskiy7()
           .scale(570)
           .rotate([90, 1])
-          .center([0,36 ])
+          .center([-20,39 ])
           .translate([ w / 2, h / 2])
           .precision(.1);
     
