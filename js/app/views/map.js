@@ -17,9 +17,9 @@ define('app/views/map', [
 			template: Ember.Handlebars.compile( map_html ),
       
       path: function() {
-        var h  = this.$().height();
-        var w  = this.$().width();
-        this.proj = d3.geo.albersUsa().scale(1000).translate( [ w/2, h/3 ] );
+        var h  = document.height;
+        var w  = document.width;
+        this.proj = d3.geo.albersUsa().scale(1000).translate( [ w/2, h/3] );
     
         return d3.geo.path().projection( this.proj );
       }.property(),
