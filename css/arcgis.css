@@ -2895,7 +2895,7 @@ html, body {
 }
 
 #esri-logo {
-  background-image: url('/img/logo-esri.png?1365631736');
+  background-image: url('../img/logo-esri.png?1365631736');
   padding-top: 48px;
   width: 85px;
   float: right;
