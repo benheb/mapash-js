@@ -19,7 +19,12 @@ define('app/views/map', [
       path: function() {
         var h  = document.height;
         var w  = document.width;
-        this.proj = d3.geo.mercator().scale(1000).translate( [ w/2, h/3] );
+        this.proj = projection = d3.geo.kavrayskiy7()
+          .scale(570)
+          .rotate([90, 1])
+          .center([0,36 ])
+          .translate([ w / 2, h / 2])
+          .precision(.1);
     
         return d3.geo.path().projection( this.proj );
       }.property(),
