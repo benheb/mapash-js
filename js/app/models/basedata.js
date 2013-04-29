@@ -13,13 +13,25 @@ define('app/models/basedata', [
       features: [],
 
       init: function( path ) {
+        this.load();
+      },
+
+      // loads in a new data set
+      load: function(){
         var self = this;
         d3.json( this.path, function( data ){
+          /*self.features = [
+            topojson.object(data, data.objects.land), 
+            topojson.object(data, data.objects.states),
+            topojson.object(data, data.objects.counties)];*/
           self.features = data.features;
-          console.log('triggering update', self.features );
-          self.trigger('update');
+          self.update();
         });
-      }
+      },
+
+      update: function(){
+        this.trigger('update');
+      } 
 		});
 	}
 );

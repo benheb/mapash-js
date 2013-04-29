@@ -9,10 +9,15 @@ define('app/views/layers', [
 	 * @returns Class
 	 */
 	function( html ) {
-		return Ember.View.extend({
+		return Ember.CollectionView.extend({
+      contentBinding: 'controller.Layers',
       classNames: [''],
 			elementId: 'layers',
-			template: Ember.Handlebars.compile( html )
+			template: Ember.Handlebars.compile( html ),
+      /*itemViewClass: Ember.View.extend({
+        //template: Ember.Handlebars.compile("the letter: {{view.content}}")
+        template: Ember.Handlebars.compile( html )
+      })*/
 		})
 	}
 );

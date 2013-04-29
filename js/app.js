@@ -17,12 +17,14 @@ require.config({
 // Load our app
 define( 'app', [
   'app/router',
+  'app/models/layer_store',
+  'app/controllers/layers',
   'app/models/basedata',
   'app/views/application',
   'jquery',
   'handlebars',
   'ember'
-  ], function( Router, BaseData, ApplicationView ) {
+  ], function( Router, LayerStore, LayersController, BaseData, ApplicationView ) {
     var App = Ember.Application.create({
       VERSION: '0.1.0',
       rootElement: '#map_app',
@@ -31,6 +33,10 @@ define( 'app', [
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
       BaseData: BaseData.create({path : 'data/us-states.json'}),        
+      //BaseData: BaseData.create({path : 'data/us.json'}),
+      layersController: LayersController.create({
+        store: new LayerStore()
+      }),
       ready: function() {
         this.initialize();
       }
