@@ -7,7 +7,7 @@ require.config({
     jquery: 'libs/jquery-1.9.1',
     ember: 'libs/ember-latest.min',
     //ember: 'libs/ember-1.0.0-rc.3',
-    handlebars: 'libs/handlebars-1.0.0-rc.3',
+    //handlebars: 'libs/handlebars-1.0.0-rc.3',
     text: 'libs/text',
     jasmine: 'lib/jasmine/jasmine',
     jasmine_html: 'lib/jasmine/jasmine-html'
@@ -22,7 +22,7 @@ define( 'app', [
   'app/models/basedata',
   'app/views/application',
   'jquery',
-  'handlebars',
+  //'handlebars',
   'ember'
   ], function( Router, LayerStore, LayersController, BaseData, ApplicationView ) {
     var App = Ember.Application.create({
@@ -33,7 +33,8 @@ define( 'app', [
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
       //BaseData: BaseData.create({path : 'data/us-states.json'}),
-      BaseData: BaseData.create({path : 'data/world-110m.json'}),        
+      BaseData: BaseData.create({path : 'data/world.json'}),
+      //BaseData: BaseData.create({path : 'data/lakes.json'}),        
       //BaseData: BaseData.create({path : 'data/us.json'}),
       layersController: LayersController.create({
         store: new LayerStore('layers')

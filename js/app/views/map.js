@@ -29,7 +29,7 @@ define('app/views/map', [
         return d3.geo.path().projection( this.proj );
       }.property(),
 
-      updateBase: function(){
+      updateBase: function( scale ){
         var self = this;
         this.layers.selectAll(this.baseId +" path").remove();
         
@@ -37,28 +37,55 @@ define('app/views/map', [
         
         console.log('world', world)
         this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.land))
+          .datum(topojson.object(world, world.objects.ne_110m_land))
           .attr("id", "regions")
           .attr("d", this.get('path'))
-          .attr('fill',   '#444' );
+          .attr('fill', '#444' );
+        
+        this.layers.insert("path")
+          .datum(topojson.object(world, world.objects.states))
+          .attr("id", "regions")
+          .attr("d", this.get('path'))
+          .attr('fill', '#444')
+          .attr('stroke', '#777' );
         
         /*
-        this.layers.selectAll( this.baseId +" path")
-            .data(this.get('basedata').features)
-          .enter().append("path")
+         * Detail
+         * counties; higher res
+         * 
+         */
+        if ( scale > 1500 ) {
+          /*
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.counties))
             .attr("id", "regions")
             .attr("d", this.get('path'))
-            .attr('stroke', '#ccc'  )
-            .attr('fill',   'white' );
-        */
+            .attr('fill', '#444')
+            .attr('stroke', '#777' );
+          */
+          this._is_detail = true;
+        } else {
+          this._is_detail = false;
+        };
+        
+        /*
+         * lakes
+         * 
+         */
+        this.layers.insert("path")
+          .datum(topojson.object(world, world.objects.ne_50m_lakes))
+          .attr("id", "regions")
+          .attr("d", this.get('path'))
+          .attr('fill', '#99b3cc');
+          
       },
 
       didInsertElement: function() {
         var view = self = this;
 
         Map.BaseData.on('update', function(){
-          self.updateBase(); 
-        })
+          self.updateBase( view.proj.scale() ); 
+        });
 
         var el = this.get('elementId');
         view.path = view.get('path');
@@ -68,35 +95,22 @@ define('app/views/map', [
             .translate(view.proj.translate())
             .scale(view.proj.scale())
             .on("zoom", function( z ) {
-                view.redraw(view);
+                view.zoom( view );
               })
             );
-           
-        //mousewheel zoom
-        view.$().on('mousewheel', function( event, delta, deltaX, deltaY ) {
-          view.zoom( event, delta, deltaX, deltaY, view )
-        });
-
-      },
-
-
-      zoom: function( event, delta, deltaX, deltaY, view) {
-        var s = view.proj.scale();
-        if ( delta > 0 ) {
-          view.proj.scale( s * 1.1 );
-        } else {
-          view.proj.scale( s * 0.9 );
-        }
         
-        view.layers.selectAll("path").attr("d", view.get('path'))
       },
-      
-      redraw: function( view ) {
-        if (d3.event) {
-          view.proj
-            .translate(d3.event.translate)
-            .scale(d3.event.scale);
+
+      zoom: function( view ) {
+        view.proj.translate(d3.event.translate)
+        view.proj.scale(d3.event.scale);
+        
+        if ( d3.event.scale > 1500 && this._is_detail === false ) {
+          view.updateBase( view.proj.scale() );
+        } else if ( d3.event.scale < 1500 && this._is_detail === true ) {
+          view.updateBase( view.proj.scale() );
         }
+          
         view.layers.selectAll("path").attr("d", view.get('path'));
       }
 
