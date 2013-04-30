@@ -57,9 +57,9 @@ html, body {
 }
 
 .sidebar-item.selected {
-  background: #555;
+  background: #999;
   border-bottom: 1px inset #EEE;
-  color: #2277FF;
+  color: #00DDDD;
 }
 
 
@@ -79,10 +79,10 @@ html, body {
 
 .sidebar-panel .close {
   position:absolute;
-  right:10px;
-  top:10px;
+  right:5px;
+  top:5px;
   color: #A3A3A3;
-  font-size:16px;
+  font-size:20px;
 }
 
 .sidebar-panel .close:hover {

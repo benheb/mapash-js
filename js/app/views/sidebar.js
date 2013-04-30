@@ -26,6 +26,8 @@ define('app/views/sidebar', [
           classNames: ['sidebar-item'],
 			    template: Ember.Handlebars.compile("{{view.content}}"),
           click: function(){
+            $('.sidebar-item').removeClass('selected');
+            $('.sidebar-item:eq('+this.contentIndex+')').addClass('selected');
             $('.sidebar-panel').hide();
             $('.sidebar-panel#' + this.get('content').toLowerCase() ).show();
           } 
