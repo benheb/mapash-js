@@ -157,18 +157,26 @@ hr{
  * Settings
  * 
  */
-#settings-projection .projections {
-  width: 125px;
-  float: left;
+#settings h5 {
+  font-weight:bold;
+}
+.settings-button {
   cursor: pointer;
   text-align: center;
   background: #5daddd;
+  width: 125px;
   padding: 11px;
   margin: 1px;
   color: #FFF;
 }
-
-#settings-projection .projections:hover {
+.settings-button:hover {
   background: rgb(89, 161, 204);
+}
+#settings-projection {
+  margin-bottom:20px;
+  overflow:hidden;
+}
+#settings-projection .projections {
+  float: left;
 }
 

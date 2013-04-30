@@ -18,6 +18,19 @@ define('app/views/settings', [
           var projection = $(this).html().toLowerCase();
           Map.mapController.project({ name: projection });
         });
+        $('.styles').on('click', function(){
+          //TODO remove random
+          var style = {
+            fill: {
+              land: '#'+Math.floor(Math.random()*16777215).toString(16),
+              water: '#'+Math.floor(Math.random()*16777215).toString(16),
+            }, 
+            stroke: {
+              color: '#'+Math.floor(Math.random()*16777215).toString(16)  
+            }
+          }
+          Map.mapController.style( style );
+        });
       },
     });
 	}

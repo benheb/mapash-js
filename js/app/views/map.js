@@ -34,26 +34,31 @@ define('app/views/map', [
 
       updateBase: function( scale ){
         var self = this;
+        //TODO fix race issue
+        if (!this.style) return;
+        
         this.layers.selectAll('.' + this.baseClass + '_path').remove();
         
         var world = this.get('map').base_data;
         
         console.log('world', world)
+        //World boundaries
         this.layers.insert("path")
           .datum(topojson.object(world, world.objects.ne_110m_land))
           .attr("id", "regions")
           .attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
-          .attr('fill', '#444' );
+          .attr('fill', this.style.fill.land );
         
+        //US States
         this.layers.insert("path")
           .datum(topojson.object(world, world.objects.states))
           .attr("id", "states")
           .attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
-          .attr('fill', '#444')
+          .attr('fill', this.style.fill.land)
           .attr('stroke-width', 0.5)
-          .attr('stroke', '#777' );
+          .attr('stroke', this.style.stroke.color );
         
         /*
          * Detail
@@ -66,26 +71,28 @@ define('app/views/map', [
             .attr("id", "counties")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', '#444')
+            .attr('fill', this.style.fill.land)
             .attr('stroke-width', 0.2)
-            .attr('stroke', '#777' );
-          this._is_detail = true;
-        } else {
-          this._is_detail = false;
-        };
-          
+            .attr('stroke', this.style.stroke.color );
+        }
+         
+        //Lakes  
         this.layers.insert("path")
           .datum(topojson.object(world, world.objects.ne_50m_lakes))
           .attr("id", "lakes")
           .attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
-          .attr('fill', '#FEFEFE');
+          .attr('fill', this.style.fill.water);
       },
 
       didInsertElement: function() {
         var view = self = this;
-        var proj = this.get('map').projection;
-        this.updatePath( proj );
+        
+        Map.mapController.on('style', function( style ) {
+          console.log('style', style)
+          view.style = style;
+          self.updateBase();
+        });
           
         Map.mapController.on('project', function( proj ) {
           self.updatePath( proj );

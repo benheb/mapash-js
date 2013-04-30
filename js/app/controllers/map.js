@@ -19,9 +19,7 @@ define('app/controllers/map', [
           title: 'An ArcGIS Composer map'
         }); // TODO add abiltiy to pass in map id
         
-        this.project();
         this.load();
-         
       },
 
       // loads in a new data set
@@ -35,12 +33,24 @@ define('app/controllers/map', [
 
       update: function(){
         this.trigger('update'); 
+        //TODO REMOVE! style / projection events not firing, unless load complete
+        this.style();
+        this.project();
       }, 
-
+      
+      //Projections Object
       project: function( proj ){
         this.projection = this.map.project( proj );
         this.trigger( 'project', this.projection );
       },
+      
+      //Style Object
+      style: function( style ) {
+        console.log('style', style)
+        this.styles = this.map.style( style );
+        console.log('SRYLES', this.styles)
+        this.trigger( 'style', this.styles );
+      }
       
 		});
 	}
