@@ -20,6 +20,7 @@ define('app/views/map', [
       updatePath: function( proj ) {
         var h  = document.height;
         var w  = document.width;
+        
         this.projection = d3.geo[ proj ]()
             .scale(500)
             .translate([w / 2, h / 2])
@@ -83,8 +84,14 @@ define('app/views/map', [
 
       didInsertElement: function() {
         var view = self = this;
-        
-        this.updatePath( "kavrayskiy7" );
+        var proj = this.get('map').projection;
+        this.updatePath( proj );
+          
+        Map.mapController.on('project', function() {
+          var proj = self.get('map').projection;
+          self.updatePath( proj );
+          self.updateBase();
+        });
         
         Map.mapController.on('update', function(){
           self.updateBase(); 
@@ -108,10 +115,10 @@ define('app/views/map', [
         var w  = document.width;
         /* show hide counties */
         if ( d3.event.scale > 3 && view._is_detail === false ) {
-          view.updatePath( 'mercator' )
+          //view.updatePath( 'mercator' )
           view.updateBase( d3.event.scale );
         } else if ( d3.event.scale < 3 && view._is_detail === true ) {
-          view.updatePath( "kavrayskiy7" );
+          //view.updatePath( "kavrayskiy7" );
           view.updateBase( d3.event.scale );
         }
         

@@ -17,8 +17,11 @@ define('app/controllers/map', [
         this.map = Map.create({
           id: 'newmap',
           title: 'An ArcGIS Composer map'
-        }); // TODO add abiltiy to pass in map id 
+        }); // TODO add abiltiy to pass in map id
+        
+        this.projection = 'kavrayskiy7'; //default;
         this.load();
+         
       },
 
       // loads in a new data set
@@ -31,15 +34,14 @@ define('app/controllers/map', [
       },
 
       update: function(){
-        this.trigger('update');
+        this.trigger('update'); 
       }, 
 
-      projection: function( proj ){
-        //if ( proj ) set projection
-        //else return current projection
-        //trigger project event 
-      }
-
+      project: function( proj ){
+        this.projection = proj;
+        this.trigger( 'project' );
+      },
+      
 		});
 	}
 );
