@@ -19,22 +19,21 @@ define( 'app', [
   'app/router',
   'app/models/layer_store',
   'app/controllers/layers',
-  'app/models/basedata',
+  'app/controllers/map',
   'app/views/application',
   'jquery',
   //'handlebars',
   'ember'
-  ], function( Router, LayerStore, LayersController, BaseData, ApplicationView ) {
+  ], function( Router, LayerStore, LayersController, MapController, ApplicationView ) {
     var App = Ember.Application.create({
       VERSION: '0.1.0',
       rootElement: '#map_app',
       Router: Router,
-      // Extend to inherit outlet support
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
-      //BaseData: BaseData.create({path : 'data/us-states.json'}),
-      BaseData: BaseData.create({path : 'data/world.json'}),     
-      //BaseData: BaseData.create({path : 'data/us.json'}),
+      mapController: MapController.create({ 
+        data_path : 'data/world.json'
+      }),     
       layersController: LayersController.create({
         store: new LayerStore('layers')
       }),

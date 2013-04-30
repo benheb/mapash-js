@@ -10,7 +10,7 @@ define('app/views/map', [
 	 */
 	function( map_html ) {
 		return Ember.View.extend({
-      basedataBinding: 'controller.namespace.BaseData',
+      mapBinding: 'controller.namespace.mapController',
 			elementId: 'map',
       classNames: [''],
       baseId: '#base',
@@ -34,7 +34,7 @@ define('app/views/map', [
         var self = this;
         this.layers.selectAll('.' + this.baseClass + '_path').remove();
         
-        var world = this.get('basedata').data;
+        var world = this.get('map').base_data;
         
         console.log('world', world)
         this.layers.insert("path")
@@ -83,7 +83,7 @@ define('app/views/map', [
       didInsertElement: function() {
         var view = self = this;
 
-        Map.BaseData.on('update', function(){
+        Map.mapController.on('update', function(){
           self.updateBase(); 
         });
 
