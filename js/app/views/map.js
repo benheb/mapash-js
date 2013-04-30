@@ -21,12 +21,12 @@ define('app/views/map', [
         var h  = document.height;
         var w  = document.width;
         
-        this.projection = d3.geo[ proj ]()
-            .scale(500)
+        this.projection = d3.geo[ proj.name ]()
+            .scale( proj.scale || 500 )
             .translate([w / 2, h / 2])
-            .rotate([90])
-            .center([-20, 39])
-            .precision(.1);
+            .rotate( proj.rotate || [90])
+            .center( proj.center || [-20,39])
+            .precision( proj.precision || 0.1);
         
         this.path = d3.geo.path()
             .projection( this.projection );
@@ -87,8 +87,7 @@ define('app/views/map', [
         var proj = this.get('map').projection;
         this.updatePath( proj );
           
-        Map.mapController.on('project', function() {
-          var proj = self.get('map').projection;
+        Map.mapController.on('project', function( proj ) {
           self.updatePath( proj );
           self.updateBase();
         });
@@ -114,14 +113,16 @@ define('app/views/map', [
         
         /* show hide counties */
         /* change projections */
-        if ( d3.event.scale <= 2.5 && self.get('map').projection !== "kavrayskiy7") {
-          Map.mapController.project( "kavrayskiy7" );
+        if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "kavrayskiy7") {
+          Map.mapController.project({name: "kavrayskiy7"});
           view.updateBase( d3.event.scale );
-        } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection !== "albers" ) {
-          Map.mapController.project('albers')
+        
+        } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {
+          Map.mapController.project({name: 'albers'})
           view.updateBase( d3.event.scale );
-        } else if ( d3.event.scale >= 5.8 && self.get('map').projection !== "mercator") {
-          Map.mapController.project('mercator')
+        
+        } else if ( d3.event.scale >= 5.8 && self.get('map').projection.name !== "mercator") {
+          Map.mapController.project({name: 'mercator'})
           view.updateBase( d3.event.scale );
         } 
         

@@ -10,7 +10,9 @@ define('app/models/map', ['ember'],
       title: null,
       layers: null,
       store: null,
-      projection: null,
+      projection: {
+        name: "kavrayskiy7"
+      },
       
       project: function( proj ){
         if (proj) this.projection = proj;
