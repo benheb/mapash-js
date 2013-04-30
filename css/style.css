@@ -90,6 +90,30 @@ html, body {
   color: #000;
 }
 
+hr{
+  border-top: 1px solid #555;
+}
+
+#upload_drop {
+  border: 5px dashed;
+  height: 300px;
+  text-align: center;
+  line-height: 300px;
+}
+
+#upload_drop .plus {
+  font-size: 144px;
+  margin:0px;
+}
+
+#upload_file {
+}
+
+#upload_file input {
+  width: 175px;
+  margin:auto; 
+}
+
 #layers {
   width:190px;
   height:100;
