@@ -77,7 +77,7 @@ define('app/views/map', [
           .attr("id", "lakes")
           .attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
-          .attr('fill', '#99b3cc');
+          .attr('fill', '#FEFEFE');
       },
 
       didInsertElement: function() {
