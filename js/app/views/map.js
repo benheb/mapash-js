@@ -17,18 +17,20 @@ define('app/views/map', [
       baseClass: 'base',
 			template: Ember.Handlebars.compile( map_html ),
       
-      path: function() {
+      updatePath: function( proj ) {
         var h  = document.height;
         var w  = document.width;
-        this.proj = projection = d3.geo.kavrayskiy7()
-          .scale(570)
-          .rotate([90, 1])
-          .center([-20,39 ])
-          .translate([ w / 2, h / 2])
-          .precision(.1);
-    
-        return d3.geo.path().projection( this.proj );
-      }.property(),
+        
+        this.projection = d3.geo[ proj ]()
+            .scale(500)
+            .translate([w / 2, h / 2])
+            .rotate([90])
+            .center([-20, 39])
+            .precision(.1);
+        
+        this.path = d3.geo.path()
+            .projection( this.projection );
+      },
 
       updateBase: function( scale ){
         var self = this;
@@ -82,11 +84,19 @@ define('app/views/map', [
 
       didInsertElement: function() {
         var view = self = this;
-
+        var proj = this.get('map').projection;
+        this.updatePath( proj );
+          
+        Map.mapController.on('project', function() {
+          var proj = self.get('map').projection;
+          self.updatePath( proj );
+          self.updateBase();
+        });
+        
         Map.mapController.on('update', function(){
           self.updateBase(); 
         });
-
+        
         var el = this.get('elementId');
         view.path = view.get('path');
         
@@ -101,11 +111,14 @@ define('app/views/map', [
       },
 
       zoom: function( view ) {
-        
+        var h  = document.height;
+        var w  = document.width;
         /* show hide counties */
         if ( d3.event.scale > 3 && view._is_detail === false ) {
+          //view.updatePath( 'mercator' )
           view.updateBase( d3.event.scale );
         } else if ( d3.event.scale < 3 && view._is_detail === true ) {
+          //view.updatePath( "kavrayskiy7" );
           view.updateBase( d3.event.scale );
         }
         
