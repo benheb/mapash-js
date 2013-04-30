@@ -1,9 +1,9 @@
-define('app/views/finder', [
-		'text!app/templates/finder.html',
+define('app/views/add_data', [
+		'text!app/templates/add_data.html',
 		'ember'
 	],
 	/**
-	 * View to render todos stats
+	 * View to render the add data interface
 	 *
 	 * @param String stats_html, stats indicator view
 	 * @returns Class
@@ -11,7 +11,7 @@ define('app/views/finder', [
 	function( html ) {
 		return Ember.View.extend({
       classNames: ['sidebar-panel'],
-			elementId: 'find',
+			elementId: 'add',
 			template: Ember.Handlebars.compile( html )
     });
 	}

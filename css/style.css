@@ -56,6 +56,14 @@ html, body {
   color:#DDD;
 }
 
+.sidebar-item.selected {
+  background: #555;
+  border-bottom: 1px inset #EEE;
+  color: #2277FF;
+}
+
+
+
 .sidebar-panel {
   display: none;
   width:300px;
@@ -63,8 +71,23 @@ html, body {
   color:#555;
   position:absolute;
   left:90px;
-  background: #fff;
+  background: #eee;
+  border: 10px solid #fff;
+  padding:10px;
   -webkit-box-shadow: 5px 0px 3px -2px #AAA;
+}
+
+.sidebar-panel .close {
+  position:absolute;
+  right:10px;
+  top:10px;
+  color: #A3A3A3;
+  font-size:16px;
+}
+
+.sidebar-panel .close:hover {
+  cursor: pointer;
+  color: #000;
 }
 
 #layers {

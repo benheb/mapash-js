@@ -1,6 +1,7 @@
 define('app/views/sidebar', [
-		'text!app/templates/sidebar.html',
 		'app/views/finder',
+		'app/views/add_data',
+		'app/views/settings',
 		'ember'
 	],
 	/**
@@ -9,13 +10,21 @@ define('app/views/sidebar', [
 	 * @param String stats_html, stats indicator view
 	 * @returns Class
 	 */
-	function( sidebar_html, Finder ) {
+	function( Finder, AddData, Settings ) {
 		return Ember.ContainerView.extend({
-      childViews: [ Finder.create(), Ember.View.extend({
+      childViews: [ Finder.create(), AddData.create(), Settings.create(), Ember.CollectionView.extend({
         classNames: [''],
 			  elementId: 'sidebar',
 			  tagName: 'div',
-			  template: Ember.Handlebars.compile( sidebar_html )
+        content: ['Add', 'Find', 'Settings'],
+        itemViewClass: Ember.View.extend({
+          classNames: ['sidebar-item'],
+			    template: Ember.Handlebars.compile("{{view.content}}"),
+          click: function(){
+            $('.sidebar-panel').hide();
+            $('.sidebar-panel#' + this.get('content').toLowerCase() ).show();
+          } 
+        })
       })]
     });
 	}
