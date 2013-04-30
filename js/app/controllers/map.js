@@ -19,7 +19,7 @@ define('app/controllers/map', [
           title: 'An ArcGIS Composer map'
         }); // TODO add abiltiy to pass in map id
         
-        this.projection = 'kavrayskiy7'; //default;
+        this.project( 'kavrayskiy7' );
         this.load();
          
       },
