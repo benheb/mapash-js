@@ -17,6 +17,11 @@ define('app/views/sidebar', [
 			  elementId: 'sidebar',
 			  tagName: 'div',
         content: ['Add', 'Find', 'Settings'],
+        didInsertElement: function() {
+          $('.sidebar-panel .close').on('click', function(){
+            $('.sidebar-panel').hide();
+          });
+        },
         itemViewClass: Ember.View.extend({
           classNames: ['sidebar-item'],
 			    template: Ember.Handlebars.compile("{{view.content}}"),
