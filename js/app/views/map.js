@@ -14,6 +14,7 @@ define('app/views/map', [
 			elementId: 'map',
       classNames: [''],
       baseId: '#base',
+      baseClass: 'base',
 			template: Ember.Handlebars.compile( map_html ),
       
       path: function() {
@@ -31,7 +32,7 @@ define('app/views/map', [
 
       updateBase: function( scale ){
         var self = this;
-        this.layers.selectAll(this.baseId +" path").remove();
+        this.layers.selectAll('.' + this.baseClass + '_path').remove();
         
         var world = this.get('basedata').data;
         
@@ -39,14 +40,17 @@ define('app/views/map', [
         this.layers.insert("path")
           .datum(topojson.object(world, world.objects.ne_110m_land))
           .attr("id", "regions")
+          .attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
           .attr('fill', '#444' );
         
         this.layers.insert("path")
           .datum(topojson.object(world, world.objects.states))
-          .attr("id", "regions")
+          .attr("id", "states")
+          .attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
           .attr('fill', '#444')
+          .attr('stroke-width', 0.5)
           .attr('stroke', '#777' );
         
         /*
@@ -54,37 +58,33 @@ define('app/views/map', [
          * counties; higher res
          * 
          */
-        if ( scale > 1500 ) {
-          /*
+        if ( scale > 3 ) {
           this.layers.insert("path")
             .datum(topojson.object(world, world.objects.counties))
-            .attr("id", "regions")
+            .attr("id", "counties")
+            .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
             .attr('fill', '#444')
+            .attr('stroke-width', 0.2)
             .attr('stroke', '#777' );
-          */
           this._is_detail = true;
         } else {
           this._is_detail = false;
         };
-        
-        /*
-         * lakes
-         * 
-         */
+          
         this.layers.insert("path")
           .datum(topojson.object(world, world.objects.ne_50m_lakes))
-          .attr("id", "regions")
+          .attr("id", "lakes")
+          .attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
-          .attr('fill', '#99b3cc');
-          
+          .attr('fill', '#FEFEFE');
       },
 
       didInsertElement: function() {
         var view = self = this;
 
         Map.BaseData.on('update', function(){
-          self.updateBase( view.proj.scale() ); 
+          self.updateBase(); 
         });
 
         var el = this.get('elementId');
@@ -92,9 +92,8 @@ define('app/views/map', [
         
         view.layers = d3.select( "#" + el ).append("svg")
           .call(d3.behavior.zoom()
-            .translate(view.proj.translate())
-            .scale(view.proj.scale())
-            .on("zoom", function( z ) {
+            .scaleExtent([1 / 5, 5])
+            .on("zoom", function() {
                 view.zoom( view );
               })
             );
@@ -102,16 +101,17 @@ define('app/views/map', [
       },
 
       zoom: function( view ) {
-        view.proj.translate(d3.event.translate)
-        view.proj.scale(d3.event.scale);
         
-        if ( d3.event.scale > 1500 && this._is_detail === false ) {
-          view.updateBase( view.proj.scale() );
-        } else if ( d3.event.scale < 1500 && this._is_detail === true ) {
-          view.updateBase( view.proj.scale() );
+        /* show hide counties */
+        if ( d3.event.scale > 3 && view._is_detail === false ) {
+          view.updateBase( d3.event.scale );
+        } else if ( d3.event.scale < 3 && view._is_detail === true ) {
+          view.updateBase( d3.event.scale );
         }
-          
-        view.layers.selectAll("path").attr("d", view.get('path'));
+        
+        view.layers.selectAll("path")
+          .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+      
       }
 
   
