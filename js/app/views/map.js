@@ -113,8 +113,8 @@ define('app/views/map', [
         
         /* show hide counties */
         /* change projections */
-        if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "kavrayskiy7") {
-          Map.mapController.project({name: "kavrayskiy7"});
+        if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
+          Map.mapController.project({name: "mollweide"});
           view.updateBase( d3.event.scale );
         
         } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {

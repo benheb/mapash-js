@@ -153,3 +153,22 @@ hr{
   transition: all .2s linear !important;
 }
 
+/*
+ * Settings
+ * 
+ */
+#settings-projection .projections {
+  width: 125px;
+  float: left;
+  cursor: pointer;
+  text-align: center;
+  background: #5daddd;
+  padding: 11px;
+  margin: 1px;
+  color: #FFF;
+}
+
+#settings-projection .projections:hover {
+  background: rgb(89, 161, 204);
+}
+

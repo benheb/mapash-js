@@ -12,7 +12,13 @@ define('app/views/settings', [
 		return Ember.View.extend({
       classNames: ['sidebar-panel'],
 			elementId: 'settings',
-			template: Ember.Handlebars.compile( html )
+			template: Ember.Handlebars.compile( html ),
+			didInsertElement: function() {
+        $('.projections').on('click', function(){
+          var projection = $(this).html().toLowerCase();
+          Map.mapController.project({ name: projection });
+        });
+      },
     });
 	}
 );

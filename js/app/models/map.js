@@ -11,7 +11,7 @@ define('app/models/map', ['ember'],
       layers: null,
       store: null,
       projection: {
-        name: "kavrayskiy7"
+        name: "mollweide"
       },
       
       project: function( proj ){
