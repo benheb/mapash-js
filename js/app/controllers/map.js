@@ -46,9 +46,7 @@ define('app/controllers/map', [
       
       //Style Object
       style: function( style ) {
-        console.log('style', style)
         this.styles = this.map.style( style );
-        console.log('SRYLES', this.styles)
         this.trigger( 'style', this.styles );
       }
       

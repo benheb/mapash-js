@@ -88,8 +88,8 @@ define('app/views/map', [
       didInsertElement: function() {
         var view = self = this;
         
+        //Bindings
         Map.mapController.on('style', function( style ) {
-          console.log('style', style)
           view.style = style;
           self.updateBase();
         });
