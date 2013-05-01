@@ -226,6 +226,11 @@ hr{
 .settings-button:hover {
   background: rgb(89, 161, 204);
 }
+
+.settings-button.selected {
+  background: rgb(76, 138, 175);
+}
+
 .settings-section {
   margin-bottom:20px;
   overflow:hidden;

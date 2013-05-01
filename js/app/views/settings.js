@@ -18,6 +18,8 @@ define('app/views/settings', [
          * Change Projections
          */
         $('.projections').on('click', function(){
+          $('.projections').removeClass('selected')
+          $(this).addClass('selected');
           var projection = $(this).html().toLowerCase();
           Map.mapController.project({ name: projection });
         });
