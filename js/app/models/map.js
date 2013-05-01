@@ -26,7 +26,7 @@ define('app/models/map', ['ember'],
         }, 
         stroke: {
           states: "#777",
-          world: "none",
+          world: "333",
           counties: "#777",
           water: "none",
         }

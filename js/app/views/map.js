@@ -100,11 +100,12 @@ define('app/views/map', [
          */
         if (this.features.counties) {
           this.base_layers.insert("path")
+            .datum(topojson.object(world, world.objects.counties))
             .attr("id", "counties")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', this.style.fill.counties)
-            .attr('stroke-width', 0.2)
+            .attr('fill', this.style.fill.counties )
+            .attr('stroke-width', 0.5)
             .attr('stroke', this.style.stroke.counties );
         }
          
