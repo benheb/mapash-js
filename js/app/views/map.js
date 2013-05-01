@@ -22,11 +22,11 @@ define('app/views/map', [
         var w  = document.width;
         
         this.projection = d3.geo[ proj.name ]()
-            .scale( proj.scale || 500 )
+            .scale( proj.scale )
             .translate([w / 2, h / 2])
-            .rotate( proj.rotate || [90])
-            .center( proj.center || [-20,39])
-            .precision( proj.precision || 0.1);
+            .rotate( proj.rotate )
+            .center( proj.center )
+            .precision( proj.precision );
         
         this.path = d3.geo.path()
             .projection( this.projection );
@@ -40,7 +40,6 @@ define('app/views/map', [
         this.layers.selectAll('.' + this.baseClass + '_path').remove();
         
         var world = this.get('map').base_data;
-        
         
         console.log('world', world)
         //World boundaries
@@ -93,7 +92,8 @@ define('app/views/map', [
       },
 
       didInsertElement: function() {
-        var view = self = this;
+        var view = self = this, 
+          el = this.get('elementId');
         
         //Bindings
         Map.mapController.on('style', function( style ) {
@@ -115,9 +115,7 @@ define('app/views/map', [
           self.updateBase(); 
         });
         
-        var el = this.get('elementId');
-        view.path = view.get('path');
-        
+        //d3 zoom binding
         view.layers = d3.select( "#" + el ).append("svg")
           .call(d3.behavior.zoom()
             .scaleExtent([1 / 10, 10])
@@ -132,25 +130,25 @@ define('app/views/map', [
         
         /* show hide counties */
         /* change projections */
+        /*
         if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
           Map.mapController.setFeatures({counties: false});
           Map.mapController.project({name: "mollweide"});
-          view.updateBase( d3.event.scale );
         
         } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {
           Map.mapController.setFeatures({counties: true});
-          Map.mapController.project({name: 'albers'})
-          view.updateBase( d3.event.scale );
+          Map.mapController.project({name: 'albers'});
         
         } else if ( d3.event.scale >= 5.8 && self.get('map').projection.name !== "mercator") {
           Map.mapController.setFeatures({counties: true});
-          Map.mapController.project({name: 'mercator'})
-          view.updateBase( d3.event.scale );
+          Map.mapController.project({name: 'mercator'});
         } 
-        
+        */
+       
+        view.updateBase( d3.event.scale );
         view.layers.selectAll("path")
           .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-      
+        
       }
 
   

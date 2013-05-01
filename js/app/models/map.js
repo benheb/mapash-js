@@ -11,7 +11,11 @@ define('app/models/map', ['ember'],
       layers: null,
       store: null,
       projection: {
-        name: "mollweide"
+        name: "mollweide",
+        scale:  500,
+        rotate: [90],
+        center: [-20,39],
+        precision: 0.1
       },
       styles: {
         fill: {
@@ -30,7 +34,7 @@ define('app/models/map', ['ember'],
       },
       
       project: function( proj ){
-        if (proj) this.projection = proj;
+        if ( proj ) this.projection = $.extend({}, this.projection, proj);
         return this.projection;
       },
       
