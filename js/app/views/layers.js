@@ -14,11 +14,18 @@ define('app/views/layers', [
       contentBinding: 'Map.layersController.content',
       classNames: [''],
 			elementId: 'layers',
-      click: function(){
-        console.log(this.get('content'));
-      },
+      //click: function(){
+        //console.log(this.get('content'));
+      //},
       itemViewClass: Ember.View.extend({
-        template: Ember.Handlebars.compile( layer_html )
+        template: Ember.Handlebars.compile( layer_html ),
+        didInsertElement: function(){
+          var self = this;
+          $('.close').on('click', function(){
+            console.log(self.content, this);
+            Map.mapController.removeLayer( self.content.id );
+          });  
+        }
       })
 		})
 	}

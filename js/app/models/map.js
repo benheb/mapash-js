@@ -8,7 +8,7 @@ define('app/models/map', ['ember'],
     return Ember.Object.extend({
       id: null,
       title: null,
-      layers: [],
+      layers: {},
       store: null,
       projection: {
         name: "mollweide"
@@ -35,10 +35,14 @@ define('app/models/map', ['ember'],
       },
 
       addLayer: function( obj ){
-        var self = this;
         if (!obj.id) obj.id = new Date().getTime();   
-        this.layers.push( obj );
+        this.layers[ obj.id ] = obj ;
         Map.layersController.add( obj );
+      },
+
+      removeLayer: function( id ){
+        delete this.layers[ id ];
+        Map.layersController.remove( id );
       },
       
       style: function( style ) {

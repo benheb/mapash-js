@@ -48,6 +48,10 @@ define('app/controllers/map', [
       addLayer: function( obj ){
         this.map.addLayer(obj);
       },
+
+      removeLayer: function( obj ){
+        this.map.removeLayer(obj);
+      },
       
       //Style Object
       style: function( style ) {

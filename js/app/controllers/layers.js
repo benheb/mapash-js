@@ -15,6 +15,16 @@ define('app/controllers/layers', [ 'ember' ],
         this.pushObject( layer );
 			},
 
+      remove: function( id ){
+        var layer = this.get( 'store' ).find( id );
+        this.removeObject( layer );
+        //var layers = this.get( 'store' ).findAll();
+        //console.log(layers);
+        //if ( layers.get( 'length' ) ) {
+        //  this.set( '[]', layers );
+        //};
+      },
+
       pushObject: function( item ) {
         this.get( 'store' ).create( item );
         return this._super( item );
