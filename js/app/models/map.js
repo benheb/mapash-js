@@ -22,6 +22,12 @@ define('app/models/map', ['ember'],
           color: "#777"  
         }
       },
+      features: {
+        land: true,
+        states: true,
+        lakes: true,
+        counties: false,
+      },
       
       project: function( proj ){
         if (proj) this.projection = proj;
@@ -34,6 +40,11 @@ define('app/models/map', ['ember'],
           if (style.stroke) this.styles.stroke = $.extend({}, this.styles.stroke, style.stroke);
         } 
         return this.styles; 
+      },
+      
+      setFeatures: function ( features ) {
+        if ( features ) this.features = $.extend({}, this.features, features);
+        return this.features;
       }
       
     });

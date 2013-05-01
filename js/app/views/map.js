@@ -41,31 +41,36 @@ define('app/views/map', [
         
         var world = this.get('map').base_data;
         
+        
         console.log('world', world)
         //World boundaries
-        this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.ne_110m_land))
-          .attr("id", "regions")
-          .attr('class', this.baseClass + '_path')
-          .attr("d", this.get('path'))
-          .attr('fill', this.style.fill.land );
+        if (this.features.land) {
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.ne_110m_land))
+            .attr("id", "regions")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.land );
+        }
         
         //US States
-        this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.states))
-          .attr("id", "states")
-          .attr('class', this.baseClass + '_path')
-          .attr("d", this.get('path'))
-          .attr('fill', this.style.fill.land)
-          .attr('stroke-width', 0.5)
-          .attr('stroke', this.style.stroke.color );
+        if (this.features.states) {
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.states))
+            .attr("id", "states")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.land)
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.color );
+        }
         
         /*
          * Detail
          * counties; higher res
          * 
          */
-        if ( scale > 2.8 ) {
+        if (this.features.counties) {
           this.layers.insert("path")
             .datum(topojson.object(world, world.objects.counties))
             .attr("id", "counties")
@@ -76,13 +81,15 @@ define('app/views/map', [
             .attr('stroke', this.style.stroke.color );
         }
          
-        //Lakes  
-        this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.ne_50m_lakes))
-          .attr("id", "lakes")
-          .attr('class', this.baseClass + '_path')
-          .attr("d", this.get('path'))
-          .attr('fill', this.style.fill.water);
+        //Lakes 
+        if (this.features.lakes) { 
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.ne_50m_lakes))
+            .attr("id", "lakes")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.water);
+        }
       },
 
       didInsertElement: function() {
@@ -97,6 +104,11 @@ define('app/views/map', [
         Map.mapController.on('project', function( proj ) {
           self.updatePath( proj );
           self.updateBase();
+        });
+        
+        Map.mapController.on('updateFeatures', function( features ){
+          view.features = features;
+          self.updateBase(); 
         });
         
         Map.mapController.on('update', function(){
@@ -121,14 +133,17 @@ define('app/views/map', [
         /* show hide counties */
         /* change projections */
         if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
+          Map.mapController.setFeatures({counties: false});
           Map.mapController.project({name: "mollweide"});
           view.updateBase( d3.event.scale );
         
         } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {
+          Map.mapController.setFeatures({counties: true});
           Map.mapController.project({name: 'albers'})
           view.updateBase( d3.event.scale );
         
         } else if ( d3.event.scale >= 5.8 && self.get('map').projection.name !== "mercator") {
+          Map.mapController.setFeatures({counties: true});
           Map.mapController.project({name: 'mercator'})
           view.updateBase( d3.event.scale );
         } 

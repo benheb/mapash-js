@@ -32,8 +32,9 @@ define('app/controllers/map', [
       },
 
       update: function(){
-        this.trigger('update'); 
+        //this.trigger('update'); 
         //TODO REMOVE! style / projection events not firing, unless load complete
+        this.setFeatures();
         this.style();
         this.project();
       }, 
@@ -48,6 +49,12 @@ define('app/controllers/map', [
       style: function( style ) {
         this.styles = this.map.style( style );
         this.trigger( 'style', this.styles );
+      },
+      
+      //Show hide features
+      setFeatures: function ( features ) {
+        this.features = this.map.setFeatures( features );
+        this.trigger( 'updateFeatures', this.features );
       }
       
 		});

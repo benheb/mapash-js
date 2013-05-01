@@ -14,10 +14,17 @@ define('app/views/settings', [
 			elementId: 'settings',
 			template: Ember.Handlebars.compile( html ),
 			didInsertElement: function() {
+        /*
+         * Change Projections
+         */
         $('.projections').on('click', function(){
           var projection = $(this).html().toLowerCase();
           Map.mapController.project({ name: projection });
         });
+        
+        /*
+         * Styles handler
+         */
         $('.styles').on('click', function(){
           //TODO remove random
           var style = {
@@ -31,6 +38,22 @@ define('app/views/settings', [
           }
           Map.mapController.style( style );
         });
+        
+        /*
+         * Add / Remove Features
+         */
+        $('.features').on('click', function() {
+          var feature = { feature : null }
+          var val = $(this).html().toLowerCase();
+          var is = ( Map.mapController.features[ val ] ) ? false : true;
+          if (!is) {
+            $(this).addClass('settings-disabled');
+          } else {
+            $(this).removeClass('settings-disabled')
+          }
+          feature[ val ] = is;
+          Map.mapController.setFeatures( feature )
+        })
       },
     });
 	}

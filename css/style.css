@@ -180,3 +180,23 @@ hr{
   float: left;
 }
 
+#settings-styles {
+  margin-bottom:20px;
+  overflow:hidden;
+}
+
+#settings-features {
+  margin-bottom:20px;
+  overflow:hidden;
+}
+
+#settings-features .features {
+  float: left;
+}
+
+.settings-disabled {
+  background:#CCC;
+}
+.settings-disabled:hover {
+  background:#999;
+}
