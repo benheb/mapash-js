@@ -5,24 +5,24 @@ define('app/controllers/layers', [ 'ember' ],
 	 * @returns Class
 	 */
 	function() {
-		return Ember.ArrayProxy.extend({
+		return Ember.ArrayController.extend({
 			store: null,
+      length: 0,
 			content: [],
 
-			createNew: function( data ) {
-				var layer = this.get( 'store' ).createFromTitle( value );
-				this.pushObject( layer );
+			add: function( obj ) {
+				var layer = this.get( 'store' ).createFromData( obj );
+        this.pushObject( layer );
 			},
 
-			pushObject: function( item, ignoreStorage) {
-				if ( !ignoreStorage )
-					this.get( 'store' ).create( item );
-				return this._super( item );
-			},
+      pushObject: function( item ) {
+        this.get( 'store' ).create( item );
+        return this._super( item );
+      },
 
 			removeObject: function( item ) {
 				this.get( 'store' ).remove( item );
-				return this._super( item );
+        return this._super( item );
 			},
 
 			total: function() {
@@ -30,11 +30,11 @@ define('app/controllers/layers', [ 'ember' ],
 			}.property( '@each.length' ),
 
 			init: function() {
-				this._super();
+				//this._super();
 				// Load layers if any upon initialization
 				var layers = this.get( 'store' ).findAll();
 				if ( layers.get( 'length' ) ) {
-					this.set( '[]', layers );
+					this.set( 'content', layers );
 				};
 			}
 		});

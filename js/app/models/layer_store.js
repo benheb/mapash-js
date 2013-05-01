@@ -18,32 +18,42 @@ define('app/models/layer_store', [
 
 			// Save the current state of the **Store** to *localStorage*.
 			this.save = function() {
-				localStorage.setItem( this.name, JSON.stringify( this.data ) );
+				//localStorage.setItem( this.name, JSON.stringify( this.data ) );
 			};
 
-			// Wrapper around `this.create`
-			// Creates a `Todo` model object out of the title
-			/*this.createFromTitle = function( title ) {
+			this.createFromData = function( data ) {
 				var layer = Layer.create({
-					title: title,
+					id: data.id,
+          title: data.title,
+          url: data.url,
 					store: this
 				});
 				this.create( layer );
 				return layer;
-			};*/
+			};
 
 			// Store the model inside the `Store`
 			this.create = function ( model ) {
 				if ( !model.get( 'id' ) )
 					model.set( 'id', Date.now() );
+        this.load( model );
 				return this.update( model );
 			};
+
+      this.load = function( model ){
+        var self = this;
+        d3.json( model.url, function( data ){
+          model.features = data.features;
+          self.update( model );
+        });
+      }   
 
 			// Update a model by replacing its copy in `this.data`.
 			this.update = function( model ) {
 				this.data[ model.get( 'id' ) ] = model.getProperties(
-					'id', 'title', 'path'
+					'id', 'features'
 				);
+        //console.log(this.data[ model.get( 'id' ) ], model);
 				this.save();
 				return model;
 			};

@@ -31,6 +31,7 @@ define( 'app', [
       Router: Router,
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
+      arcgis: ArcGIS(),
       mapController: MapController.create({ 
         data_path : 'data/world.json'
       }),     

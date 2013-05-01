@@ -123,8 +123,43 @@ hr{
   top:5px;
   background: #eee;
   border: 5px solid #fff;
-  padding:10px;
+  padding:5px;
   -webkit-box-shadow: 0px 0px 5px 2px #AAA;
+}
+
+.layer-item {
+  position:relative;
+  padding:5px;
+  border: 2px solid #fff;
+  font-size:10px;
+}
+
+.layer-item .title {
+  max-width:175px;
+  margin-bottom: 20px;
+  font-size:14px;
+}
+
+.layer-item .close{
+  position:absolute;
+  right:0px;
+  top:-5px;
+  color: #A3A3A3;
+  font-size:15px;
+}
+
+.layer-item .style{
+  position:absolute;
+  left:5px;
+  bottom:5px;
+  color: #A3A3A3;
+}
+
+.layer-item .options{
+  position:absolute;
+  right:5px;
+  bottom:5px;
+  color: #A3A3A3;
 }
 
 .brand.sub-brand {

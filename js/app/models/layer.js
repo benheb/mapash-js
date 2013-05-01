@@ -7,9 +7,9 @@ define('app/models/layer', ['ember'],
 	function() {
 		return Ember.Object.extend({
 			id: null,
-			title: null,
-      path: null,
-      data: null,
+      title: null,
+      url: null,
+      features: [],
 			store: null
 		});
 	}

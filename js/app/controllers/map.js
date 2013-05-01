@@ -41,6 +41,10 @@ define('app/controllers/map', [
         this.projection = proj;
         this.trigger( 'project' );
       },
+
+      addLayer: function( obj ){
+        this.map.addLayer(obj);
+      }
       
 		});
 	}

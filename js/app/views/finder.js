@@ -12,7 +12,12 @@ define('app/views/finder', [
 		return Ember.View.extend({
       classNames: ['sidebar-panel'],
 			elementId: 'find',
-			template: Ember.Handlebars.compile( html )
+			template: Ember.Handlebars.compile( html ),
+      didInsertElement: function(){
+        $('#' + this.elementId + ' #add').on('click', function(){
+          Map.mapController.addLayer({title: 'Colorado Snow Totals', url: 'data/snow.json'});
+        });
+      }
     });
 	}
 );
