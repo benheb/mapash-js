@@ -47,7 +47,7 @@ define('app/controllers/map', [
 
       addLayer: function( obj ){
         this.map.addLayer(obj);
-      }
+      },
       
       //Style Object
       style: function( style ) {
