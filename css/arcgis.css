@@ -2903,7 +2903,7 @@ html, body {
 }
 @media screen and (-webkit-min-device-pixel-ratio: 1.5), screen and (min-device-pixel-ratio: 1.5) {
   #esri-logo {
-    background-image: url('/img/logo-esri@2x.png?1365631736');
+    background-image: url('../img/logo-esri@2x.png?1365631736');
   }
 }
 
