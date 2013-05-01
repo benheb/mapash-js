@@ -268,6 +268,23 @@ hr{
  * Finder
  * 
  */
-#search-agol {
-  
+#search-items {
+  margin: auto;
+  margin-top: 0px;
+  width: 98%;
+  max-height: 300px;
+  overflow-y: auto;
+}
+#search-items .search-item-result {
+  background: #FFF;
+  padding-top: 3px;
+  border-bottom: 1px dotted #eee;
+  padding-bottom: 3px;
+  padding-left:10px;
+}
+
+#search-items .search-item-result:hover {
+  background: #5daddd;
+  color:#FFFFFF;
+  cursor:pointer;
 }
