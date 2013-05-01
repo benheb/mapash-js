@@ -22,7 +22,7 @@ define('app/views/map', [
           classNames: ['map-layers'],
           tagName: 'g',
           itemViewClass: Ember.View.extend({
-            template: Ember.Handlebars.compile( "" ),
+            //template: Ember.Handlebars.compile( "" ),
             tagName: 'g',
             classNames: ['layer'],
             //elementId: .get('content').id,
