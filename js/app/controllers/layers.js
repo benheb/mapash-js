@@ -36,6 +36,7 @@ define('app/controllers/layers', [ 'ember' ],
 			}.property( '@each.length' ),
 
 			init: function() {
+        var self = this;
 				this._super();
 				// Load layers if any upon initialization
 				var layers = this.get( 'store' ).findAll();

@@ -36,7 +36,7 @@ define( 'app', [
         data_path : 'data/world.json'
       }),     
       layersController: LayersController.create({
-        store: new LayerStore('layers')
+        store: LayerStore.create()
       }),
       ready: function() {
         this.initialize();
