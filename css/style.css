@@ -235,9 +235,10 @@ hr{
   cursor: pointer;
   text-align: center;
   background: #5daddd;
-  width: 125px;
+  width: 123px;
   padding: 11px;
   margin: 1px;
+  border:1px solid #EEE;
   color: #FFF;
 }
 .settings-button:hover {

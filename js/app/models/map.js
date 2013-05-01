@@ -19,15 +19,20 @@ define('app/models/map', ['ember'],
       },
       styles: {
         fill: {
-          land: "#444",
+          states: "none",
+          world: "#444",
+          counties: "none",
           water: "#FEFEFE",
         }, 
         stroke: {
-          color: "#777"  
+          states: "#777",
+          world: "none",
+          counties: "#777",
+          water: "none",
         }
       },
       features: {
-        land: true,
+        world: true,
         states: true,
         lakes: true,
         counties: false,
