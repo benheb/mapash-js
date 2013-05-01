@@ -22,14 +22,22 @@ define('app/views/map', [
         var w  = document.width;
         
         this.projection = d3.geo[ proj.name ]()
-            .scale( proj.scale || 500 )
+            .scale( proj.scale )
             .translate([w / 2, h / 2])
-            .rotate( proj.rotate || [90])
-            .center( proj.center || [-20,39])
-            .precision( proj.precision || 0.1);
+            .rotate( proj.rotate )
+            .center( proj.center )
+            .precision( proj.precision );
         
         this.path = d3.geo.path()
             .projection( this.projection );
+            
+        this.λ = d3.scale.linear()
+          .domain([0, w])
+          .range([-180, 180]);
+        
+        this.φ = d3.scale.linear()
+          .domain([0, h])
+          .range([90, -90]);
       },
 
       updateBase: function( scale ){
@@ -40,7 +48,6 @@ define('app/views/map', [
         this.layers.selectAll('.' + this.baseClass + '_path').remove();
         
         var world = this.get('map').base_data;
-        
         
         console.log('world', world)
         //World boundaries
@@ -93,7 +100,9 @@ define('app/views/map', [
       },
 
       didInsertElement: function() {
-        var view = self = this;
+        var view = self = this, 
+          el = this.get('elementId'),
+          down = false;
         
         //Bindings
         Map.mapController.on('style', function( style ) {
@@ -114,10 +123,12 @@ define('app/views/map', [
         Map.mapController.on('update', function(){
           self.updateBase(); 
         });
+       
+        Map.mapController.on('changePan', function(pan){
+          self.dynamicPan = pan;
+        });
         
-        var el = this.get('elementId');
-        view.path = view.get('path');
-        
+        //d3 zoom binding
         view.layers = d3.select( "#" + el ).append("svg")
           .call(d3.behavior.zoom()
             .scaleExtent([1 / 10, 10])
@@ -126,12 +137,24 @@ define('app/views/map', [
               })
             );
         
+        //dynamic pann
+        view.layers.on("mousedown", function() { down = true; });
+        view.layers.on("mouseup", function() { down = false; });
+        
+        view.layers.on("mousemove", function() {
+          if ( down === false || !view.dynamicPan ) return;
+          
+          var p = d3.mouse(this);
+          view.projection.rotate( [ view.λ( p[0] ), view.φ( p[1] ) ] );
+          view.layers.selectAll("path").attr( "d", view.path );
+        });        
       },
 
       zoom: function( view ) {
         
         /* show hide counties */
         /* change projections */
+        /*
         if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
           Map.mapController.setFeatures({counties: false});
           Map.mapController.project({name: "mollweide"});
@@ -139,18 +162,24 @@ define('app/views/map', [
         
         } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {
           Map.mapController.setFeatures({counties: true});
-          Map.mapController.project({name: 'albers'})
+          Map.mapController.project({name: 'albers'});
           view.updateBase( d3.event.scale );
         
         } else if ( d3.event.scale >= 5.8 && self.get('map').projection.name !== "mercator") {
           Map.mapController.setFeatures({counties: true});
-          Map.mapController.project({name: 'mercator'})
+          Map.mapController.project({name: 'mercator'});
           view.updateBase( d3.event.scale );
         } 
+        */
+       
+        if ( !view.dynamicPan ) { 
+          view.layers.selectAll("path")
+            .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        } else {
+          view.layers.selectAll("path")
+            .attr("transform", "scale(" + d3.event.scale + ")");
+        }
         
-        view.layers.selectAll("path")
-          .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-      
       }
 
   

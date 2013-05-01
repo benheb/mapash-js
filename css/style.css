@@ -226,23 +226,15 @@ hr{
 .settings-button:hover {
   background: rgb(89, 161, 204);
 }
-#settings-projection {
+.settings-section {
   margin-bottom:20px;
   overflow:hidden;
 }
+
 #settings-projection .projections {
   float: left;
 }
 
-#settings-styles {
-  margin-bottom:20px;
-  overflow:hidden;
-}
-
-#settings-features {
-  margin-bottom:20px;
-  overflow:hidden;
-}
 
 #settings-features .features {
   float: left;

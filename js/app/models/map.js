@@ -11,7 +11,11 @@ define('app/models/map', ['ember'],
       layers: {},
       store: null,
       projection: {
-        name: "mollweide"
+        name: "mollweide",
+        scale:  500,
+        rotate: [90],
+        center: [-20,39],
+        precision: 0.1
       },
       styles: {
         fill: {
@@ -28,9 +32,10 @@ define('app/models/map', ['ember'],
         lakes: true,
         counties: false,
       },
+      dynamicPan: false,
       
       project: function( proj ){
-        if (proj) this.projection = proj;
+        if ( proj ) this.projection = $.extend({}, this.projection, proj);
         return this.projection;
       },
 
@@ -56,6 +61,11 @@ define('app/models/map', ['ember'],
       setFeatures: function ( features ) {
         if ( features ) this.features = $.extend({}, this.features, features);
         return this.features;
+      },
+      
+      setPan: function( pan ) {
+        if ( pan ) this.dynamicPan = pan;
+        return this.dynamicPan; 
       }
       
     });
