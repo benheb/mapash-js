@@ -5,7 +5,7 @@ define('app/controllers/layers', [ 'ember' ],
 	 * @returns Class
 	 */
 	function() {
-		return Ember.ArrayController.extend({
+		return Ember.ArrayController.extend( Ember.Evented, {
 			store: null,
       length: 0,
 			content: [],

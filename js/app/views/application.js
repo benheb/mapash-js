@@ -27,7 +27,14 @@ define('app/views/application', [
           template: Ember.Handlebars.compile("<div class='row'>{{yield}}</div>"),
 					elementId: 'map_main',
 					classNames: [''],
-				  childViews: [ SidebarView.create(), LayersView.create(), MapView.create() ]
+				  childViews: [ 
+            SidebarView.create(), 
+            LayersView.create(), 
+            Ember.ContainerView.create({
+              template: Ember.Handlebars.compile("<div>{{yield}}</div>"),
+              childViews: [ MapView.create() ]
+            })
+          ]
 				})
 			})
 	}
