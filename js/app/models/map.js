@@ -32,6 +32,7 @@ define('app/models/map', ['ember'],
         lakes: true,
         counties: false,
       },
+      dynamicPan: false,
       
       project: function( proj ){
         if ( proj ) this.projection = $.extend({}, this.projection, proj);
@@ -49,6 +50,11 @@ define('app/models/map', ['ember'],
       setFeatures: function ( features ) {
         if ( features ) this.features = $.extend({}, this.features, features);
         return this.features;
+      },
+      
+      setPan: function( pan ) {
+        if ( pan ) this.dynamicPan = pan;
+        return this.dynamicPan; 
       }
       
     });

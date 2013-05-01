@@ -30,6 +30,14 @@ define('app/views/map', [
         
         this.path = d3.geo.path()
             .projection( this.projection );
+            
+        this.λ = d3.scale.linear()
+          .domain([0, w])
+          .range([-180, 180]);
+        
+        this.φ = d3.scale.linear()
+          .domain([0, h])
+          .range([90, -90]);
       },
 
       updateBase: function( scale ){
@@ -93,7 +101,8 @@ define('app/views/map', [
 
       didInsertElement: function() {
         var view = self = this, 
-          el = this.get('elementId');
+          el = this.get('elementId'),
+          down = false;
         
         //Bindings
         Map.mapController.on('style', function( style ) {
@@ -114,6 +123,10 @@ define('app/views/map', [
         Map.mapController.on('update', function(){
           self.updateBase(); 
         });
+       
+        Map.mapController.on('changePan', function(pan){
+          self.dynamicPan = pan;
+        });
         
         //d3 zoom binding
         view.layers = d3.select( "#" + el ).append("svg")
@@ -124,6 +137,17 @@ define('app/views/map', [
               })
             );
         
+        //dynamic pann
+        view.layers.on("mousedown", function() { down = true; });
+        view.layers.on("mouseup", function() { down = false; });
+        
+        view.layers.on("mousemove", function() {
+          if ( down === false || !view.dynamicPan ) return;
+          
+          var p = d3.mouse(this);
+          view.projection.rotate( [ view.λ( p[0] ), view.φ( p[1] ) ] );
+          view.layers.selectAll("path").attr( "d", view.path );
+        });        
       },
 
       zoom: function( view ) {
@@ -148,8 +172,13 @@ define('app/views/map', [
         } 
         */
        
-        view.layers.selectAll("path")
-          .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        if ( !view.dynamicPan ) { 
+          view.layers.selectAll("path")
+            .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        } else {
+          view.layers.selectAll("path")
+            .attr("transform", "scale(" + d3.event.scale + ")");
+        }
         
       }
 

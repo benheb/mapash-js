@@ -53,6 +53,14 @@ define('app/views/settings', [
           }
           feature[ val ] = is;
           Map.mapController.setFeatures( feature )
+        });
+        
+        /*
+         * Pan controls
+         */
+        $('#dynamic-panning').on('click', function() {
+          var val = $(this).is(':checked');
+          Map.mapController.setPan( val );
         })
       },
     });

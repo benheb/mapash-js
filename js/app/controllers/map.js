@@ -36,6 +36,7 @@ define('app/controllers/map', [
         //TODO REMOVE! style / projection events not firing, unless load complete
         this.setFeatures();
         this.style();
+        this.setPan();
         this.project();
       }, 
       
@@ -55,7 +56,13 @@ define('app/controllers/map', [
       setFeatures: function ( features ) {
         this.features = this.map.setFeatures( features );
         this.trigger( 'updateFeatures', this.features );
-      }
+      },
+      
+      //pan mode
+      setPan: function ( pan ) {
+        this.dynamicPan = this.map.setPan( pan );
+        this.trigger( 'changePan', this.dynamicPan );
+      } 
       
 		});
 	}
