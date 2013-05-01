@@ -16,7 +16,7 @@ define('app/views/sidebar', [
         classNames: [''],
 			  elementId: 'sidebar',
 			  tagName: 'div',
-        content: ['Add', 'Find', 'Settings'],
+        content: ['Create', 'Find', 'Settings'],
         didInsertElement: function() {
           $('.sidebar-panel .close').on('click', function(){
             $('.sidebar-panel').hide();
