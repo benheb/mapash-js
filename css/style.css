@@ -60,7 +60,7 @@ html, body {
 .sidebar-item.selected {
   background: #EDEDED;
   border-bottom: 1px inset #CCC;
-  color: #5daddd;
+  color: #d94c1d;
 }
 
 
@@ -79,11 +79,11 @@ html, body {
 }
 
 .sidebar-panel .close {
-  position:absolute;
-  right:5px;
-  top:5px;
+  position: absolute;
+  right: 6px;
+  top: 2px;
   color: #A3A3A3;
-  font-size:20px;
+  font-size: 20px;
 }
 
 .sidebar-panel .close:hover {
@@ -207,13 +207,30 @@ hr{
   transition: all .2s linear !important;
 }
 
+.ui-section {
+  margin-bottom:20px;
+  overflow:hidden;
+  padding-bottom:3px;
+}
+
+.item-title {
+  font-family: "Avenir LT W01 65 Medium",Arial,Helvetica,sans-serif;
+  font-size: 1.00em;
+  line-height: 1.5em;
+  display:block;
+}
+
+.section-title {
+  font-family: "Avenir LT W01 65 Medium",Arial,Helvetica,sans-serif;
+  font-size: 1.4em;
+  line-height: 1.5em;
+}
+
 /*
  * Settings
  * 
  */
-#settings h5 {
-  font-weight:bold;
-}
+
 .settings-button {
   cursor: pointer;
   text-align: center;
@@ -231,11 +248,6 @@ hr{
   background: rgb(76, 138, 175);
 }
 
-.settings-section {
-  margin-bottom:20px;
-  overflow:hidden;
-}
-
 #settings-projection .projections {
   float: left;
 }
@@ -250,4 +262,12 @@ hr{
 }
 .settings-disabled:hover {
   background:#999;
+}
+
+/*
+ * Finder
+ * 
+ */
+#search-agol {
+  
 }

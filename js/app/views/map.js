@@ -168,7 +168,7 @@ define('app/views/map', [
         
         /* show hide counties */
         /* change projections */
-        /*
+        /* REMOVED FOR NOW
         if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
           Map.mapController.setFeatures({counties: false});
           Map.mapController.project({name: "mollweide"});
