@@ -62,7 +62,6 @@ define('app/models/layer_store', [
 			this.find = function( id ) {
 				var layer = Layer.create( this.data[ id ] );
 				layer.set( 'store', this );
-        console.log('find', layer);
 				return layer;
 			};
 
@@ -83,7 +82,6 @@ define('app/models/layer_store', [
 			// Delete a model from `this.data`, returning it.
 			this.remove = function( model ) {
 				delete this.data[ model.get( 'id' ) ];
-        console.log('remove', model);
 				this.save();
 				return model;
 			};

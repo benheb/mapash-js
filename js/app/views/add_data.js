@@ -11,7 +11,7 @@ define('app/views/add_data', [
 	function( html ) {
 		return Ember.View.extend({
       classNames: ['sidebar-panel'],
-			elementId: 'add',
+			elementId: 'create',
 			template: Ember.Handlebars.compile( html )
     });
 	}

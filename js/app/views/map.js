@@ -9,13 +9,27 @@ define('app/views/map', [
 	 * @returns Class
 	 */
 	function( map_html ) {
-		return Ember.View.extend({
+		return Ember.ContainerView.extend({
       mapBinding: 'controller.namespace.mapController',
 			elementId: 'map',
-      classNames: [''],
+      classNames: ['baseCONTAINER'],
       baseId: '#base',
       baseClass: 'base',
-			template: Ember.Handlebars.compile( map_html ),
+      childViews: [
+        Ember.CollectionView.extend({
+          contentBinding: 'Map.layersController.content',
+          itemViewClass: Ember.View.extend({
+            template: Ember.Handlebars.compile( "" ),
+            classNames: ['layer'],
+            didInsertElement: function(){
+              //alert('map layer');
+            }
+          }) 
+        }),
+        Ember.View.extend({
+          template: Ember.Handlebars.compile( map_html )
+        })
+      ],
       
       updatePath: function( proj ) {
         var h  = document.height;

@@ -14,16 +14,15 @@ define('app/views/layers', [
       contentBinding: 'Map.layersController.content',
       classNames: [''],
 			elementId: 'layers',
-      //click: function(){
-        //console.log(this.get('content'));
-      //},
       itemViewClass: Ember.View.extend({
         template: Ember.Handlebars.compile( layer_html ),
         didInsertElement: function(){
           var self = this;
-          $('.close').on('click', function(){
-            console.log(self.content, this);
+          $('.layer-item:eq('+self.contentIndex+') .close').on('click', function(){
+            //console.log(self.content, this);
             Map.mapController.removeLayer( self.content.id );
+            //console.log('post removal', self.get('content'))
+            //self.remove();
           });  
         }
       })
