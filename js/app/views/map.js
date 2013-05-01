@@ -21,12 +21,12 @@ define('app/views/map', [
         var h  = document.height;
         var w  = document.width;
         
-        this.projection = d3.geo[ proj ]()
-            .scale(500)
+        this.projection = d3.geo[ proj.name ]()
+            .scale( proj.scale || 500 )
             .translate([w / 2, h / 2])
-            .rotate([90])
-            .center([-20, 39])
-            .precision(.1);
+            .rotate( proj.rotate || [90])
+            .center( proj.center || [-20,39])
+            .precision( proj.precision || 0.1);
         
         this.path = d3.geo.path()
             .projection( this.projection );
@@ -34,63 +34,81 @@ define('app/views/map', [
 
       updateBase: function( scale ){
         var self = this;
+        //TODO fix race issue
+        if (!this.style) return;
+        
         this.layers.selectAll('.' + this.baseClass + '_path').remove();
         
         var world = this.get('map').base_data;
         
-        console.log('world', world)
-        this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.ne_110m_land))
-          .attr("id", "regions")
-          .attr('class', this.baseClass + '_path')
-          .attr("d", this.get('path'))
-          .attr('fill', '#444' );
         
-        this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.states))
-          .attr("id", "states")
-          .attr('class', this.baseClass + '_path')
-          .attr("d", this.get('path'))
-          .attr('fill', '#444')
-          .attr('stroke-width', 0.5)
-          .attr('stroke', '#777' );
+        console.log('world', world)
+        //World boundaries
+        if (this.features.land) {
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.ne_110m_land))
+            .attr("id", "regions")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.land );
+        }
+        
+        //US States
+        if (this.features.states) {
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.states))
+            .attr("id", "states")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.land)
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.color );
+        }
         
         /*
          * Detail
          * counties; higher res
          * 
          */
-        if ( scale > 3 ) {
+        if (this.features.counties) {
           this.layers.insert("path")
             .datum(topojson.object(world, world.objects.counties))
             .attr("id", "counties")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', '#444')
+            .attr('fill', this.style.fill.land)
             .attr('stroke-width', 0.2)
-            .attr('stroke', '#777' );
-          this._is_detail = true;
-        } else {
-          this._is_detail = false;
-        };
-          
-        this.layers.insert("path")
-          .datum(topojson.object(world, world.objects.ne_50m_lakes))
-          .attr("id", "lakes")
-          .attr('class', this.baseClass + '_path')
-          .attr("d", this.get('path'))
-          .attr('fill', '#FEFEFE');
+            .attr('stroke', this.style.stroke.color );
+        }
+         
+        //Lakes 
+        if (this.features.lakes) { 
+          this.layers.insert("path")
+            .datum(topojson.object(world, world.objects.ne_50m_lakes))
+            .attr("id", "lakes")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.water);
+        }
       },
 
       didInsertElement: function() {
         var view = self = this;
-        var proj = this.get('map').projection;
-        this.updatePath( proj );
+        
+        //Bindings
+        Map.mapController.on('style', function( style ) {
+          view.style = style;
+          self.updateBase();
+        });
           
-        Map.mapController.on('project', function() {
-          var proj = self.get('map').projection;
+        Map.mapController.on('project', function( proj ) {
           self.updatePath( proj );
           self.updateBase();
+        });
+        
+        Map.mapController.on('updateFeatures', function( features ){
+          view.features = features;
+          self.updateBase(); 
         });
         
         Map.mapController.on('update', function(){
@@ -102,7 +120,7 @@ define('app/views/map', [
         
         view.layers = d3.select( "#" + el ).append("svg")
           .call(d3.behavior.zoom()
-            .scaleExtent([1 / 5, 5])
+            .scaleExtent([1 / 10, 10])
             .on("zoom", function() {
                 view.zoom( view );
               })
@@ -111,16 +129,24 @@ define('app/views/map', [
       },
 
       zoom: function( view ) {
-        var h  = document.height;
-        var w  = document.width;
+        
         /* show hide counties */
-        if ( d3.event.scale > 3 && view._is_detail === false ) {
-          //view.updatePath( 'mercator' )
+        /* change projections */
+        if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
+          Map.mapController.setFeatures({counties: false});
+          Map.mapController.project({name: "mollweide"});
           view.updateBase( d3.event.scale );
-        } else if ( d3.event.scale < 3 && view._is_detail === true ) {
-          //view.updatePath( "kavrayskiy7" );
+        
+        } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {
+          Map.mapController.setFeatures({counties: true});
+          Map.mapController.project({name: 'albers'})
           view.updateBase( d3.event.scale );
-        }
+        
+        } else if ( d3.event.scale >= 5.8 && self.get('map').projection.name !== "mercator") {
+          Map.mapController.setFeatures({counties: true});
+          Map.mapController.project({name: 'mercator'})
+          view.updateBase( d3.event.scale );
+        } 
         
         view.layers.selectAll("path")
           .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");

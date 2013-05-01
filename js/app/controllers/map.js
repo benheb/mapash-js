@@ -19,9 +19,7 @@ define('app/controllers/map', [
           title: 'An ArcGIS Composer map'
         }); // TODO add abiltiy to pass in map id
         
-        this.projection = 'kavrayskiy7'; //default;
         this.load();
-         
       },
 
       // loads in a new data set
@@ -34,16 +32,33 @@ define('app/controllers/map', [
       },
 
       update: function(){
-        this.trigger('update'); 
+        //this.trigger('update'); 
+        //TODO REMOVE! style / projection events not firing, unless load complete
+        this.setFeatures();
+        this.style();
+        this.project();
       }, 
-
+      
+      //Projections Object
       project: function( proj ){
-        this.projection = proj;
-        this.trigger( 'project' );
+        this.projection = this.map.project( proj );
+        this.trigger( 'project', this.projection );
       },
 
       addLayer: function( obj ){
         this.map.addLayer(obj);
+      }
+      
+      //Style Object
+      style: function( style ) {
+        this.styles = this.map.style( style );
+        this.trigger( 'style', this.styles );
+      },
+      
+      //Show hide features
+      setFeatures: function ( features ) {
+        this.features = this.map.setFeatures( features );
+        this.trigger( 'updateFeatures', this.features );
       }
       
 		});
