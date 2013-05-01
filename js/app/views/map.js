@@ -134,18 +134,20 @@ define('app/views/map', [
         if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
           Map.mapController.setFeatures({counties: false});
           Map.mapController.project({name: "mollweide"});
+          view.updateBase( d3.event.scale );
         
         } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {
           Map.mapController.setFeatures({counties: true});
           Map.mapController.project({name: 'albers'});
+          view.updateBase( d3.event.scale );
         
         } else if ( d3.event.scale >= 5.8 && self.get('map').projection.name !== "mercator") {
           Map.mapController.setFeatures({counties: true});
           Map.mapController.project({name: 'mercator'});
+          view.updateBase( d3.event.scale );
         } 
         */
        
-        view.updateBase( d3.event.scale );
         view.layers.selectAll("path")
           .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         
