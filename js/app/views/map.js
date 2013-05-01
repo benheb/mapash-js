@@ -12,22 +12,27 @@ define('app/views/map', [
 		return Ember.ContainerView.extend({
       mapBinding: 'controller.namespace.mapController',
 			elementId: 'map',
-      classNames: ['baseCONTAINER'],
+			tagName: 'svg',
+      classNames: [''],
       baseId: '#base',
       baseClass: 'base',
       childViews: [
         Ember.CollectionView.extend({
           contentBinding: 'Map.layersController.content',
+          classNames: ['map-layers'],
+          tagName: 'g',
           itemViewClass: Ember.View.extend({
             template: Ember.Handlebars.compile( "" ),
+            tagName: 'g',
             classNames: ['layer'],
+            //elementId: .get('content').id,
             didInsertElement: function(){
-              //alert('map layer');
+              console.log('map layer', this.content.id );
             }
           }) 
         }),
         Ember.View.extend({
-          template: Ember.Handlebars.compile( map_html )
+          //template: Ember.Handlebars.compile( map_html )
         })
       ],
       
@@ -59,14 +64,14 @@ define('app/views/map', [
         //TODO fix race issue
         if (!this.style) return;
         
-        this.layers.selectAll('.' + this.baseClass + '_path').remove();
+        this.base_layers.selectAll('.' + this.baseClass + '_path').remove();
         
         var world = this.get('map').base_data;
         
         console.log('world', world)
         //World boundaries
         if (this.features.land) {
-          this.layers.insert("path")
+          this.base_layers.insert("path")
             .datum(topojson.object(world, world.objects.ne_110m_land))
             .attr("id", "regions")
             .attr('class', this.baseClass + '_path')
@@ -76,7 +81,7 @@ define('app/views/map', [
         
         //US States
         if (this.features.states) {
-          this.layers.insert("path")
+          this.base_layers.insert("path")
             .datum(topojson.object(world, world.objects.states))
             .attr("id", "states")
             .attr('class', this.baseClass + '_path')
@@ -92,7 +97,7 @@ define('app/views/map', [
          * 
          */
         if (this.features.counties) {
-          this.layers.insert("path")
+          this.base_layers.insert("path")
             .datum(topojson.object(world, world.objects.counties))
             .attr("id", "counties")
             .attr('class', this.baseClass + '_path')
@@ -104,7 +109,7 @@ define('app/views/map', [
          
         //Lakes 
         if (this.features.lakes) { 
-          this.layers.insert("path")
+          this.base_layers.insert("path")
             .datum(topojson.object(world, world.objects.ne_50m_lakes))
             .attr("id", "lakes")
             .attr('class', this.baseClass + '_path')
@@ -141,9 +146,13 @@ define('app/views/map', [
         Map.mapController.on('changePan', function(pan){
           self.dynamicPan = pan;
         });
+
+        Map.layersController.on('features', function( layer ){
+          console.log('FEATURES', layer);
+        });
         
         //d3 zoom binding
-        view.layers = d3.select( "#" + el ).append("svg")
+        view.base_layers = d3.select( "#" + el ).append("g")
           .call(d3.behavior.zoom()
             .scaleExtent([1 / 10, 10])
             .on("zoom", function() {
@@ -152,15 +161,15 @@ define('app/views/map', [
             );
         
         //dynamic pann
-        view.layers.on("mousedown", function() { down = true; });
-        view.layers.on("mouseup", function() { down = false; });
+        view.base_layers.on("mousedown", function() { down = true; });
+        view.base_layers.on("mouseup", function() { down = false; });
         
-        view.layers.on("mousemove", function() {
+        view.base_layers.on("mousemove", function() {
           if ( down === false || !view.dynamicPan ) return;
           
           var p = d3.mouse(this);
           view.projection.rotate( [ view.λ( p[0] ), view.φ( p[1] ) ] );
-          view.layers.selectAll("path").attr( "d", view.path );
+          view.base_layers.selectAll("path").attr( "d", view.path );
         });        
       },
 
@@ -187,10 +196,10 @@ define('app/views/map', [
         */
        
         if ( !view.dynamicPan ) { 
-          view.layers.selectAll("path")
+          view.base_layers.selectAll("path")
             .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         } else {
-          view.layers.selectAll("path")
+          view.base_layers.selectAll("path")
             .attr("transform", "scale(" + d3.event.scale + ")");
         }
         
