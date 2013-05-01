@@ -18,11 +18,6 @@ define('app/controllers/layers', [ 'ember' ],
       remove: function( id ){
         var layer = this.get( 'store' ).find( id );
         this.removeObject( layer );
-        //var layers = this.get( 'store' ).findAll();
-        //console.log(layers);
-        //if ( layers.get( 'length' ) ) {
-        //  this.set( '[]', layers );
-        //};
       },
 
       pushObject: function( item ) {
@@ -32,6 +27,7 @@ define('app/controllers/layers', [ 'ember' ],
 
 			removeObject: function( item ) {
 				this.get( 'store' ).remove( item );
+        this.set( 'content', this.get( 'store' ).findAll());
         return this._super( item );
 			},
 
@@ -40,7 +36,7 @@ define('app/controllers/layers', [ 'ember' ],
 			}.property( '@each.length' ),
 
 			init: function() {
-				//this._super();
+				this._super();
 				// Load layers if any upon initialization
 				var layers = this.get( 'store' ).findAll();
 				if ( layers.get( 'length' ) ) {
