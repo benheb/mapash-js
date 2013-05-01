@@ -28,7 +28,7 @@ html, body {
 }
 
 #header {
-  border-bottom: 1px inset #777;
+  border-bottom:1px solid rgb(233, 233, 233);
 }  
 
 #sidebar {
@@ -39,27 +39,28 @@ html, body {
   left:0px;
   background: #fff;
   font-size:10px;
-  -webkit-box-shadow: 5px 0px 3px -2px #AAA;
+  -webkit-box-shadow: 5px 0px 22px -8px #AAA;
 }
 
 .sidebar-item{
   height: 75px;
   text-align: center;
-  border-bottom: 1px inset #777;
+  border-bottom: 1px inset #CCC;
   line-height: 75px;
+  font-size:9pt;
 }
 
 .sidebar-item:hover {
   cursor: pointer;
-  background: #777;
-  border-bottom: 1px inset #EEE;
-  color:#DDD;
+  background: #EDEDED;
+  border-bottom: 1px inset #CCC;
+  color:#222;
 }
 
 .sidebar-item.selected {
-  background: #999;
-  border-bottom: 1px inset #EEE;
-  color: #00DDDD;
+  background: #EDEDED;
+  border-bottom: 1px inset #CCC;
+  color: #5daddd;
 }
 
 
@@ -74,7 +75,7 @@ html, body {
   background: #eee;
   border: 10px solid #fff;
   padding:10px;
-  -webkit-box-shadow: 5px 0px 3px -2px #AAA;
+  -webkit-box-shadow: 5px 0px 32px -9px #AAA;
 }
 
 .sidebar-panel .close {
