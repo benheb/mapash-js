@@ -151,9 +151,6 @@ define('app/views/map', [
           self.dynamicPan = pan;
         });
 
-        Map.layersController.on('features', function( layer ){
-          console.log('FEATURES', layer);
-        });
         
         //d3 zoom binding
         view.base_layers = d3.select( "#" + el ).append("g")
@@ -165,11 +162,12 @@ define('app/views/map', [
             );
         
         //dynamic pann
-        view.base_layers.on("mousedown", function() { down = true; });
-        view.base_layers.on("mouseup", function() { down = false; });
+        //d3.select( "#" + el ).on("mousedown", function() { down = true; });
+        //d3.select( "#" + el ).on("mouseup", function() { down = false; });
         
-        view.base_layers.on("mousemove", function() {
-          if ( down === false || !view.dynamicPan ) return;
+        d3.select( "#" + el ).on("mousemove", function() {
+          //if ( down === false || !view.dynamicPan ) return;
+          if ( !view.dynamicPan ) return;
           
           var p = d3.mouse(this);
           view.projection.rotate( [ view.λ( p[0] ), view.φ( p[1] ) ] );
