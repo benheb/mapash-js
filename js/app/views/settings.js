@@ -17,7 +17,7 @@ define('app/views/settings', [
 			  var self = this;
 			  
 			  Map.mapController.on('style', function( style ) {
-          self.updateStyle( style );
+          self.updateUI( style );
         });
 			  
 			  /*
@@ -31,7 +31,7 @@ define('app/views/settings', [
         });
         
         /*
-         * Styles handler
+         * Randomizer!
          */
         $('.styles').on('click', function(){
           //TODO remove random
@@ -55,7 +55,7 @@ define('app/views/settings', [
         /*
          * Add / Remove Features
          */
-        $('.features').on('click', function() {
+        $('.toggle-features').on('click', function() {
           var feature = { feature : null }
           var val = $(this).html().toLowerCase();
           var is = ( Map.mapController.features[ val ] ) ? false : true;
@@ -69,6 +69,36 @@ define('app/views/settings', [
         });
         
         /*
+         * Styler
+         * 
+         */
+        $('.features .edit').on('click', function() {
+          var val = $(this).closest(".features").attr('id'),
+            fill = {}
+          
+          $('#styler').remove();
+          $('.features').css({'width': '123px', 'height': '20px'});
+          $(this).closest(".features").animate({'width': '270px', 'height': '185px'}, 'slow');
+          
+          var edit = "\
+              <div id='styler'>\
+                <input type='text' id='flat' />\
+                <div id='hide-show'></div>\
+              </div>"
+          
+          $(this).closest(".features").append(edit);
+          $("#flat").spectrum({
+              flat: true,
+              showInput: true,
+              move: function(color) {
+                $(this).closest(".features").css('background', color.toHexString());
+                fill[ val ] = color.toHexString();
+                Map.mapController.style({fill: fill})
+              }
+          });
+        });
+        
+        /*
          * Pan controls
          */
         $('#dynamic-panning').on('click', function() {
@@ -77,14 +107,13 @@ define('app/views/settings', [
         })
       },
       
-      updateStyle: function( style ) {
+      updateUI: function( style ) {
         for (fill in style.fill ) {
           $('.features.'+fill).css('background', style.fill[ fill ])
         }
         for (stroke in style.stroke ) {
           $('.features.'+stroke).css('border', '1px solid '+ style.stroke[ stroke ])
         }
-
       }
     });
 	}

@@ -68,7 +68,7 @@ html, body {
 .sidebar-panel {
   display: none;
   width:300px;
-  height:100%;
+  height:84%;
   color:#555;
   position:absolute;
   left:90px;
@@ -236,10 +236,12 @@ hr{
   text-align: center;
   background: #5daddd;
   width: 123px;
+  height:20px;
   padding: 11px;
   margin: 1px;
   border:1px solid #EEE;
   color: #FFF;
+  position:relative;
 }
 .settings-button:hover {
   background: rgb(89, 161, 204);
@@ -249,11 +251,44 @@ hr{
   background: rgb(76, 138, 175);
 }
 
+.settings-button span {
+  font-size:8pt;
+  position:absolute;
+  right:5px;
+  top:14px;
+}
+
 #settings-projection .projections {
   float: left;
 }
 
+.features {
+  cursor:default;
+}
 
+.features .edit {
+  cursor:pointer;
+}
+.features .sp-container.sp-flat {
+  position: absolute;
+  top: 40px;
+  left:5px;
+}
+.features .sp-container {
+  background-color:transparent;
+  border:none;
+}
+
+.features .sp-input-container {
+  display:none;  
+} 
+
+.features .sp-picker-container {
+  border-left:none;
+}
+.features .sp-color, .sp-hue {
+  border: none;
+}
 #settings-features .features {
   float: left;
 }
