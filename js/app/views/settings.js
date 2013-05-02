@@ -16,8 +16,8 @@ define('app/views/settings', [
 			didInsertElement: function() {
 			  var self = this;
 			  
-			  Map.mapController.on('style', function( style ) {
-          self.updateUI( style );
+        Map.mapController.on('updateFeatures', function( features ) {
+          self.updateFeatures( features );
         });
 			  
 			  /*
@@ -53,75 +53,26 @@ define('app/views/settings', [
         });
         
         /*
-         * Add / Remove Features
-         */
-        $('.toggle-features').on('click', function() {
-          var feature = { feature : null }
-          var val = $(this).html().toLowerCase();
-          var is = ( Map.mapController.features[ val ] ) ? false : true;
-          if (!is) {
-            $(this).addClass('settings-disabled');
-          } else {
-            $(this).removeClass('settings-disabled')
-          }
-          feature[ val ] = is;
-          Map.mapController.setFeatures( feature )
-        });
-        
-        /*
          * Styler
          * 
          */
         $('.features .edit').on('click', function() {
-          var val = $(this).closest(".features").attr('id'),
-            fill = {},
-            stroke = {},
-            mode = 'fill',
-            visible = (Map.mapController.features[ val ]) ? "Hide" : "Show";
+          var target = $(this).closest(".features");
           
-          $('#styler').remove();
-          $('.features').css({'width': '123px', 'height': '20px'});
-          $(this).closest(".features").animate({'width': '270px', 'height': '185px'}, 'slow');
+          if ( target.hasClass('selected') ) {
+            target.animate({'width': '123px', 'height': '20px'}, 'slow');
+            target.removeClass('selected');
+            $('#styler').remove();
+          } else {
+            target.addClass('selected');
+            target.animate({'width': '271px', 'height': '185px'}, 'slow');
+            self.styler( target );
+          }
           
-          var edit = "\
-              <div id='styler'>\
-                <input type='text' id='flat' />\
-                <div class='btn light small selected stroke-fill' id='styler-fill'>Fill</div>\
-                <div class='btn light small stroke-fill' id='styler-stroke'>Stroke</div>\
-                <div class='btn light small' id='styler-show-hide'>" + visible + "</div>\
-                <div id='hide-show'></div>\
-              </div>"
-          $(this).closest(".features").append(edit);
-          
-          $('.stroke-fill').on('click', function() {
-            $('.stroke-fill').removeClass('selected');
-            $(this).addClass('selected');
-            mode = $(this).html().toLowerCase();
-          });
-          
-          $('#styler-show-hide').on('click', function() {
-            var feature = { feature : null };
-            feature[ val ] = ( Map.mapController.features[ val ] ) ? false : true;
-            Map.mapController.setFeatures( feature );
-            var html = ( $('#styler-show-hide').html() == 'Hide' ) ? 'Show' : 'Hide';
-            $('#styler-show-hide').html( html );
-          });
-          
-          $("#flat").spectrum({
-              flat: true,
-              showInput: true,
-              move: function(color) {
-                $(this).closest(".features").css('background', color.toHexString());
-                if (mode == 'fill') {
-                  fill[ val ] = color.toHexString();
-                  Map.mapController.style({fill: fill});
-                } else {
-                  stroke[ val ] = color.toHexString();
-                  Map.mapController.style({stroke: stroke});
-                }
-              }
-          });
-        });
+          $.each($('.features'), function(i,f) {
+            if ( f !== target[ 0 ] ) $(f).css({'width': '123px', 'height': '20px'}).removeClass('selected');
+          })
+        })
         
         /*
          * Pan controls
@@ -132,13 +83,64 @@ define('app/views/settings', [
         })
       },
       
-      updateUI: function( style ) {
-        for (fill in style.fill ) {
-          $('.features.'+fill).css('background', style.fill[ fill ])
-        }
-        for (stroke in style.stroke ) {
-          $('.features.'+stroke).css('border', '1px solid '+ style.stroke[ stroke ])
-        }
+      styler: function( target ) {
+        
+        var val = $( target ).attr( 'id' ),
+          fill = {},
+          stroke = {},
+          mode = 'fill',
+          visible = ( Map.mapController.features[ val ] ) ? "Hide" : "Show";
+        
+        $('#styler').remove();
+        var edit = "\
+            <div id='styler'>\
+              <input type='text' id='flat' />\
+              <div class='btn light small selected stroke-fill' id='styler-fill'>Fill</div>\
+              <div class='btn light small stroke-fill' id='styler-stroke'>Stroke</div>\
+              <div class='btn light small' id='styler-show-hide'>" + visible + "</div>\
+              <div id='hide-show'></div>\
+            </div>"
+        $( target ).append(edit);
+        
+        $('.stroke-fill').on('click', function() {
+          $('.stroke-fill').removeClass('selected');
+          $(this).addClass('selected');
+          mode = $(this).html().toLowerCase();
+        });
+        
+        $('#styler-show-hide').on('click', function() {
+          var feature = { feature : null };
+          feature[ val ] = ( Map.mapController.features[ val ] ) ? false : true;
+          Map.mapController.setFeatures( feature );
+          var html = ( $('#styler-show-hide').html() == 'Hide' ) ? 'Show' : 'Hide';
+          $('#styler-show-hide').html( html );
+        });
+        
+        $("#flat").spectrum({
+            flat: true,
+            showInput: true,
+            move: function(color) {
+              //$(this).closest(".features").css('background', color.toHexString());
+              if (mode == 'fill') {
+                fill[ val ] = color.toHexString();
+                Map.mapController.style({fill: fill});
+              } else {
+                stroke[ val ] = color.toHexString();
+                Map.mapController.style({stroke: stroke});
+              }
+            }
+        });
+      },
+      
+      updateFeatures: function( feature ) {
+        $.each($('.features'), function(i,f) {
+          var visible = feature[ $(f).attr('id') ];
+          if ( !visible ) {
+            $(f).addClass('settings-disabled');
+          } else {
+            $(f).removeClass('settings-disabled');
+          } 
+        });
       }
     });
 	}

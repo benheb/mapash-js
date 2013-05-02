@@ -34,7 +34,7 @@ define('app/models/map', ['ember'],
       features: {
         world: true,
         states: true,
-        lakes: true,
+        water: true,
         counties: false,
       },
       dynamicPan: false,

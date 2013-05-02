@@ -68,13 +68,15 @@ html, body {
 .sidebar-panel {
   display: none;
   width:300px;
-  height:84%;
+  height:85%;
   color:#555;
   position:absolute;
   left:90px;
   background: #eee;
   border: 10px solid #fff;
   padding:10px;
+  overflow:hidden;
+  overflow-y:auto;
   -webkit-box-shadow: 5px 0px 32px -9px #AAA;
 }
 
@@ -248,7 +250,7 @@ hr{
 }
 
 .settings-button.selected {
-  background: rgb(76, 138, 175);
+  background: rgb(48, 114, 153);
 }
 
 .settings-button span {
@@ -301,7 +303,7 @@ hr{
 }
 #styler {
   overflow: hidden;
-  background: #eee;
+  background: #FEFEFE;
   height: 160px;
   margin-top: 7px;
 }
