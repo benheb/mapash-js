@@ -74,7 +74,10 @@ define('app/views/settings', [
          */
         $('.features .edit').on('click', function() {
           var val = $(this).closest(".features").attr('id'),
-            fill = {}
+            fill = {},
+            stroke = {},
+            mode = 'fill',
+            visible = (Map.mapController.features[ val ]) ? "Hide" : "Show";
           
           $('#styler').remove();
           $('.features').css({'width': '123px', 'height': '20px'});
@@ -83,17 +86,39 @@ define('app/views/settings', [
           var edit = "\
               <div id='styler'>\
                 <input type='text' id='flat' />\
+                <div class='btn light small selected stroke-fill' id='styler-fill'>Fill</div>\
+                <div class='btn light small stroke-fill' id='styler-stroke'>Stroke</div>\
+                <div class='btn light small' id='styler-show-hide'>" + visible + "</div>\
                 <div id='hide-show'></div>\
               </div>"
-          
           $(this).closest(".features").append(edit);
+          
+          $('.strok-fill').on('click', function() {
+            $('#styler .btn').removeClass('selected');
+            $(this).addClass('selected');
+            mode = $(this).html().toLowerCase();
+          });
+          
+          $('#styler-show-hide').on('click', function() {
+            var feature = { feature : null };
+            feature[ val ] = ( Map.mapController.features[ val ] ) ? false : true;
+            Map.mapController.setFeatures( feature );
+            var html = ( $('#styler-show-hide').html() == 'Hide' ) ? 'Show' : 'Hide';
+            $('#styler-show-hide').html( html );
+          });
+          
           $("#flat").spectrum({
               flat: true,
               showInput: true,
               move: function(color) {
                 $(this).closest(".features").css('background', color.toHexString());
-                fill[ val ] = color.toHexString();
-                Map.mapController.style({fill: fill})
+                if (mode == 'fill') {
+                  fill[ val ] = color.toHexString();
+                  Map.mapController.style({fill: fill});
+                } else {
+                  stroke[ val ] = color.toHexString();
+                  Map.mapController.style({stroke: stroke});
+                }
               }
           });
         });

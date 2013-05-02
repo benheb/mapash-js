@@ -299,6 +299,33 @@ hr{
 .settings-disabled:hover {
   background:#999;
 }
+#styler {
+  overflow: hidden;
+  background: #eee;
+  height: 160px;
+  margin-top: 7px;
+}
+#styler-fill {
+  position: absolute;
+  right: 17px;
+  top: 48px;
+  width:80px;
+}
+
+#styler-stroke {
+  position:absolute;
+  right:17px;
+  top:85px;
+  width:80px;
+  padding-left:10px;
+}
+
+#styler-show-hide {
+  position:absolute;
+  right:17px;
+  top:123px;
+  width:80px;
+}
 
 /*
  * Finder
