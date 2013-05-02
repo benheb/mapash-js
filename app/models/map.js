@@ -1,4 +1,4 @@
-//require('app/models/layer_store');
+require('app/models/layer_store');
 
 Composer.MapModel = Ember.Object.extend( Ember.Evented, {
   store: null,
@@ -19,12 +19,17 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
   },
   styles: {
     fill: {
-      land: "#444",
-      water: "#FEFEFE",
-    },
-    stroke: {
-      color: "#777"
-    }
+          states: "none",
+          world: "#444",
+          counties: "none",
+          water: "#FEFEFE",
+        }, 
+        stroke: {
+          states: "#777",
+          world: "333",
+          counties: "#777",
+          water: "none",
+        }
   },
   features: {
     land: true,
@@ -58,7 +63,26 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
   },
 
   init: function(){
-    alert('init')
+    this.load('../data/world.json');
+  },
+
+  load: function( path ){
+    var self = this;
+    d3.json( path, function( data ){
+      self.base_data = data;
+      self.update();
+    });
+  },
+
+  update: function(){
+        //this.trigger('update'); 
+        //TODO REMOVE! style / projection events not firing, unless load complete
+        //this.setFeatures();
+        //this.style();
+        //this.setPan();
+        //this.project();
+    console.log('trigger', this.base_data);
+    this.trigger( 'updateFeatures', this.base_data );
   } 
 
 });

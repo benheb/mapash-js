@@ -2,6 +2,8 @@ Composer.MapView = Ember.ContainerView.extend({
   mapBinding: 'Composer.Map',
   elementId: 'map',
   tagName: 'svg',
+  baseId: '#base',
+  baseClass: 'base',
   childViews: [
     Ember.CollectionView.extend({
       contentBinding: 'Composer.layersController.content',
@@ -27,7 +29,7 @@ Composer.MapView = Ember.ContainerView.extend({
     var self = this;
     var el = this.get('elementId');
     //d3 zoom binding
-    this.layer_vis = d3.select( "#" + el )
+    this.layer_viz = d3.select( "#"+el )
       .call(d3.behavior.zoom()
         .scaleExtent([1 / 10, 10])
         .on("zoom", function() {
@@ -68,8 +70,7 @@ Composer.MapView = Ember.ContainerView.extend({
     Map.mapController.on('changePan', function(pan){
       self.dynamicPan = pan;
     });*/
-    
-    Composer.Map.on('update', function(){
+    Composer.Map.on('updateFeatures', function(){
       self.updateBase(); 
     });
 
@@ -82,28 +83,30 @@ Composer.MapView = Ember.ContainerView.extend({
   updateBase: function( scale ){
         var self = this;
         //TODO fix race issue
-        if (!this.style) return;
+        //if (!this.style) return;
+
+        this.style = Composer.Map.style();
         
         this.layer_viz.selectAll('.' + this.baseClass + '_path').remove();
         
         //var world = this.get('map').base_data;
-        var world = Composer.Map.base_data;
+        window.world = Composer.Map.base_data;
         
         console.log('world', world)
         //World boundaries
-        if (this.features.world) {
+        //if (this.features.world) {
           this.layer_viz.insert("path")
             .datum(topojson.object(world, world.objects.ne_110m_land))
             .attr("id", "regions")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', this.style.fill.world )
+            .attr('fill', '#000' )
             .attr('stroke-width', 0.5)
             .attr('stroke', this.style.stroke.world );
-        }
+        //}
         
-        //US States
-        if (this.features.states) {
+        /*//US States
+        //if (this.features.states) {
           this.layers_viz.insert("path")
             .datum(topojson.object(world, world.objects.states))
             .attr("id", "states")
@@ -114,12 +117,7 @@ Composer.MapView = Ember.ContainerView.extend({
             .attr('stroke', this.style.stroke.states );
         }
         
-        /*
-         * Detail
-         * counties; higher res
-         * 
-         */
-        if (this.features.counties) {
+        //if (this.features.counties) {
           this.layer_viz.insert("path")
             .datum(topojson.object(world, world.objects.counties))
             .attr("id", "counties")
@@ -128,10 +126,10 @@ Composer.MapView = Ember.ContainerView.extend({
             .attr('fill', this.style.fill.counties )
             .attr('stroke-width', 0.5)
             .attr('stroke', this.style.stroke.counties );
-        }
+        //}
          
         //Lakes 
-        if (this.features.lakes) { 
+        //if (this.features.lakes) { 
           this.layer_viz.insert("path")
             .datum(topojson.object(world, world.objects.ne_50m_lakes))
             .attr("id", "lakes")
@@ -140,7 +138,7 @@ Composer.MapView = Ember.ContainerView.extend({
             .attr('fill', this.style.fill.water)
             .attr('stroke-width', 0.5)
             .attr('stroke', this.style.stroke.water );
-        }
+        //}*/
   },
 
 
@@ -163,10 +161,10 @@ Composer.MapView = Ember.ContainerView.extend({
   zoom: function( view ) {
     console.log('zooom');   
     if ( !this.dynamicPan ) { 
-      this.layer_vis.selectAll("path")
+      this.layer_viz.selectAll("path")
         .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     } else {
-      this.layer_vis.selectAll("path")
+      this.layer_viz.selectAll("path")
         .attr("transform", "scale(" + d3.event.scale + ")");
     }
 
@@ -184,14 +182,15 @@ Composer.MapView = Ember.ContainerView.extend({
           })
         )*/
 
-    el.selectAll("path")
+    this.layer_viz.selectAll("path")
       //this.base_layers.selectAll('path')
         .data(layer.features)
         .enter().append('path')
           //.attr("id", "")
           //.attr('class', this.baseClass + '_path')
           .attr("d", this.get('path'))
-          .attr('fill', '#08C');
+          .style('fill', '#08C')
+          .style('stroke', '#fff');
   }
         
 });
