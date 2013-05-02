@@ -13,7 +13,7 @@ define('app/models/map', ['ember'],
       projection: {
         name: "mollweide",
         scale:  500,
-        rotate: [90],
+        rotate: [90, 0, 0],
         center: [-20,39],
         precision: 0.1
       },

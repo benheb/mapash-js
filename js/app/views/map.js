@@ -55,13 +55,6 @@ define('app/views/map', [
         this.path = d3.geo.path()
             .projection( this.projection );
             
-        this.λ = d3.scale.linear()
-          .domain([0, w])
-          .range([-180, 180]);
-        
-        this.φ = d3.scale.linear()
-          .domain([0, h])
-          .range([90, -90]);
       },
 
       updateBase: function( scale ){
@@ -167,20 +160,37 @@ define('app/views/map', [
             .on("zoom", function() {
                 view.zoom( view );
               })
+            )
+          .call(d3.behavior.drag()
+            .on("drag", function() {
+                if (view.dynamicPan) view.drag( view );
+              })
             );
+               
+      },
+      
+      
+      drag: function( view ) {
+        var start = { 
+          lon: view.projection.rotate()[0], 
+          lat: view.projection.rotate()[1]
+        },
         
-        //dynamic pann
-        d3.select( "#" + el ).on("mousedown", function() { down = true; });
-        d3.select( "#" + el ).on("mouseup", function() { down = false; });
+        delta = { x: d3.event.dx, y: d3.event.dy },
+        scaling = 0.15,
+        end = { 
+          lon: start.lon + delta.x * scaling, 
+          lat: start.lat - delta.y * scaling 
+        };
         
-        d3.select( "#" + el ).on("mousemove", function() {
-          if ( down === false || !view.dynamicPan ) return;
-          //if ( !view.dynamicPan ) return;
-          
-          var p = d3.mouse(this);
-          view.projection.rotate( [ view.λ( p[0] ), view.φ( p[1] ) ] );
-          view.base_layers.selectAll("path").attr( "d", view.path );
-        });        
+        // clamp latitudinal rotation to 30 degrees N or S
+        end.lat = end.lat >  30 ?  30 :
+                  end.lat < -30 ? -30 :
+                  end.lat;
+        
+        // change the projection settings to new rotation
+        view.projection.rotate( [ end.lon, end.lat ] )
+        view.base_layers.selectAll("path").attr( "d", view.path );
       },
 
       zoom: function( view ) {
