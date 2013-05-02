@@ -75,13 +75,15 @@ define('app/views/map', [
         
         console.log('world', world)
         //World boundaries
-        if (this.features.land) {
+        if (this.features.world) {
           this.base_layers.insert("path")
             .datum(topojson.object(world, world.objects.ne_110m_land))
             .attr("id", "regions")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', this.style.fill.land );
+            .attr('fill', this.style.fill.world )
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.world );
         }
         
         //US States
@@ -91,9 +93,9 @@ define('app/views/map', [
             .attr("id", "states")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', this.style.fill.land)
+            .attr('fill', this.style.fill.states)
             .attr('stroke-width', 0.5)
-            .attr('stroke', this.style.stroke.color );
+            .attr('stroke', this.style.stroke.states );
         }
         
         /*
@@ -107,9 +109,9 @@ define('app/views/map', [
             .attr("id", "counties")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', this.style.fill.land)
-            .attr('stroke-width', 0.2)
-            .attr('stroke', this.style.stroke.color );
+            .attr('fill', this.style.fill.counties )
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.counties );
         }
          
         //Lakes 
@@ -119,7 +121,9 @@ define('app/views/map', [
             .attr("id", "lakes")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', this.style.fill.water);
+            .attr('fill', this.style.fill.water)
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.water );
         }
       },
 
@@ -166,11 +170,12 @@ define('app/views/map', [
             );
         
         //dynamic pann
-        view.base_layers.on("mousedown", function() { down = true; });
-        view.base_layers.on("mouseup", function() { down = false; });
+        //d3.select( "#" + el ).on("mousedown", function() { down = true; });
+        //d3.select( "#" + el ).on("mouseup", function() { down = false; });
         
-        view.base_layers.on("mousemove", function() {
-          if ( down === false || !view.dynamicPan ) return;
+        d3.select( "#" + el ).on("mousemove", function() {
+          //if ( down === false || !view.dynamicPan ) return;
+          if ( !view.dynamicPan ) return;
           
           var p = d3.mouse(this);
           view.projection.rotate( [ view.λ( p[0] ), view.φ( p[1] ) ] );

@@ -5,8 +5,9 @@ require.config({
     d3: 'libs/d3', 
     d3geo: 'libs/d3.geo',
     jquery: 'libs/jquery-1.9.1',
-    //ember: 'libs/ember-latest.min',
-    ember: 'libs/ember-1.0.0-rc.3',
+    spectrum: 'libs/spectrum',
+    ember: 'libs/ember-latest.min',
+    //ember: 'libs/ember-1.0.0-rc.3',
     //handlebars: 'libs/handlebars-1.0.0-rc.3',
     text: 'libs/text',
     jasmine: 'lib/jasmine/jasmine',
@@ -22,6 +23,7 @@ define( 'app', [
   'app/controllers/map',
   'app/views/application',
   'jquery',
+  'spectrum',
   //'handlebars',
   'ember'
   ], function( Router, LayerStore, LayersController, MapController, ApplicationView ) {
@@ -31,7 +33,6 @@ define( 'app', [
       Router: Router,
       ApplicationController: Ember.Controller.extend(),
       ApplicationView: ApplicationView,
-      arcgis: ArcGIS(),
       mapController: MapController.create({ 
         data_path : 'data/world.json'
       }),     

@@ -20,6 +20,7 @@ define('app/views/sidebar', [
         didInsertElement: function() {
           $('.sidebar-panel .close').on('click', function(){
             $('.sidebar-panel').hide();
+            $('.sidebar-item').removeClass('selected');
           });
         },
         itemViewClass: Ember.View.extend({
