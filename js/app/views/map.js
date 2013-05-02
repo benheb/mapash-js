@@ -1,5 +1,6 @@
 define('app/views/map', [
 		'text!app/templates/map.html',
+		'text!app/templates/layer.html',
 		'ember'
 	],
 	/**
@@ -8,7 +9,7 @@ define('app/views/map', [
 	 * @param String stats_html, stats indicator view
 	 * @returns Class
 	 */
-	function( map_html ) {
+	function( map_html, layer_html ) {
 		return Ember.ContainerView.extend({
       mapBinding: 'controller.namespace.mapController',
 			elementId: 'map',
@@ -22,12 +23,16 @@ define('app/views/map', [
           classNames: ['map-layers'],
           tagName: 'g',
           itemViewClass: Ember.View.extend({
-            //template: Ember.Handlebars.compile( "" ),
+            //template: Ember.Handlebars.compile( layer_html ),
             tagName: 'g',
-            classNames: ['layer'],
-            //elementId: .get('content').id,
+            //classNames: ['layer'],
+            //elementId: //content.id,
             didInsertElement: function(){
-              console.log('map layer', this.content.id );
+              //console.log('AFTER layer', this) 
+              $($(this.get('element'))[0]).addClass('layer-'+this.content.id);
+              //$($(this.get('element'))[0]).id(this.content.id+'-layer');
+              //$(this.get('element')).addClass(this.content.id);
+              //this.set('classNames', ['layer', this.content.id]);
             }
           }) 
         }),
@@ -147,12 +152,12 @@ define('app/views/map', [
           self.dynamicPan = pan;
         });
 
-        Map.layersController.on('features', function( layer ){
-          console.log('FEATURES', layer);
+        Map.layersController.get('store').on('features', function( layer ){
+          view.renderLayer(layer);
         });
         
         //d3 zoom binding
-        view.base_layers = d3.select( "#" + el ).append("g")
+        view.base_layers = d3.select( "#" + el )
           .call(d3.behavior.zoom()
             .scaleExtent([1 / 10, 10])
             .on("zoom", function() {
@@ -202,7 +207,30 @@ define('app/views/map', [
           view.base_layers.selectAll("path")
             .attr("transform", "scale(" + d3.event.scale + ")");
         }
-        
+
+      },
+
+      renderLayer: function( layer ){
+        var self = this;
+        console.log( 'FEATURES', layer.features );
+        //console.log( d3.select('.layer-' + layer.id).selectAll('path'))
+        var el = d3.select('.layer-' + layer.id);
+      
+        el.call(d3.behavior.zoom()
+            .scaleExtent([1 / 10, 10])
+            .on("zoom", function() {
+                self.zoom( self );
+              })
+            )
+
+        el.selectAll("path")
+        //this.base_layers.selectAll('path')
+            .data(layer.features)
+            .enter().append('path')
+              //.attr("id", "")
+              //.attr('class', this.baseClass + '_path')
+              .attr("d", this.get('path'))
+              .attr('fill', '#3F3');
       }
 
   
