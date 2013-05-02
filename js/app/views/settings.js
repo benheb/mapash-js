@@ -93,8 +93,8 @@ define('app/views/settings', [
               </div>"
           $(this).closest(".features").append(edit);
           
-          $('.strok-fill').on('click', function() {
-            $('#styler .btn').removeClass('selected');
+          $('.stroke-fill').on('click', function() {
+            $('.stroke-fill').removeClass('selected');
             $(this).addClass('selected');
             mode = $(this).html().toLowerCase();
           });
