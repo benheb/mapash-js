@@ -15,7 +15,6 @@ Composer.LayersController = Ember.ArrayController.extend( Ember.Evented, {
 
       pushObject: function( item ) {
         this.get( 'store' ).create( item );
-        console.log('CONTENT', this.get( 'content'));
         return this._super( item );
       },
 

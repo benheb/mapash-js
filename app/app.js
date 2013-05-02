@@ -1,5 +1,7 @@
 require('dependencies/jquery-1.8.3');
 require('dependencies/d3.v3.min');
+require("dependencies/d3.geo.projection.v0.min");
+require("dependencies/topojson.v0.min");
 require('dependencies/handlebars');
 require('dependencies/ember');
 require('dependencies/compiled/templates');
@@ -21,7 +23,6 @@ require('app/controllers/layers');
 
 // VIEWS
 require('app/views/application');
-
 
 // ROUTES
 require('app/routes/router');
