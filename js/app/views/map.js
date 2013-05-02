@@ -187,7 +187,6 @@ define('app/views/map', [
         
         /* show hide counties */
         /* change projections */
-        /* REMOVED FOR NOW
         if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
           Map.mapController.setFeatures({counties: false});
           Map.mapController.project({name: "mollweide"});
@@ -203,7 +202,6 @@ define('app/views/map', [
           Map.mapController.project({name: 'mercator'});
           view.updateBase( d3.event.scale );
         } 
-        */
        
         if ( !view.dynamicPan ) { 
           view.base_layers.selectAll("path")
