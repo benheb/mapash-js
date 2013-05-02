@@ -145,5 +145,5 @@ module.exports = function(grunt) {
     Default task. Compiles templates, neuters application code, and begins
     watching for changes.
   */
-  grunt.registerTask('default', ['ember_templates', 'neuter']);
+  grunt.registerTask('default', ['ember_templates', 'neuter', 'watch']);
 };
