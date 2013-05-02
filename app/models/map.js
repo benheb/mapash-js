@@ -74,4 +74,6 @@ Composer.Map.reopenClass({
     return this.dynamicPan;
   }
 
+  
+
 });

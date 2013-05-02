@@ -1,5 +1,5 @@
 Composer.MapView = Ember.ContainerView.extend({
-  mapBinding: 'Composer.map',
+  mapBinding: 'Composer.Map',
   elementId: 'map',
   tagName: 'svg',
   childViews: [
@@ -48,11 +48,101 @@ Composer.MapView = Ember.ContainerView.extend({
 
     this.updatePath();
 
+    //Bindings
+    /*Map.mapController.on('style', function( style ) {
+      view.style = style;
+      self.updateBase();
+    });
+      
+    Map.mapController.on('project', function( proj ) {
+      self.updatePath( proj );
+      self.updateBase();
+    });
+    
+    Map.mapController.on('updateFeatures', function( features ){
+      view.features = features;
+      self.updateBase(); 
+    });
+    
+    
+    Map.mapController.on('changePan', function(pan){
+      self.dynamicPan = pan;
+    });*/
+    
+    Composer.Map.on('update', function(){
+      self.updateBase(); 
+    });
+
     Composer.layersController.get('store').on('features', function( layer ){
       self.renderLayer(layer);
     });
 
   },
+
+  updateBase: function( scale ){
+        var self = this;
+        //TODO fix race issue
+        if (!this.style) return;
+        
+        this.layer_viz.selectAll('.' + this.baseClass + '_path').remove();
+        
+        //var world = this.get('map').base_data;
+        var world = Composer.Map.base_data;
+        
+        console.log('world', world)
+        //World boundaries
+        if (this.features.world) {
+          this.layer_viz.insert("path")
+            .datum(topojson.object(world, world.objects.ne_110m_land))
+            .attr("id", "regions")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.world )
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.world );
+        }
+        
+        //US States
+        if (this.features.states) {
+          this.layers_viz.insert("path")
+            .datum(topojson.object(world, world.objects.states))
+            .attr("id", "states")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.states)
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.states );
+        }
+        
+        /*
+         * Detail
+         * counties; higher res
+         * 
+         */
+        if (this.features.counties) {
+          this.layer_viz.insert("path")
+            .datum(topojson.object(world, world.objects.counties))
+            .attr("id", "counties")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.counties )
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.counties );
+        }
+         
+        //Lakes 
+        if (this.features.lakes) { 
+          this.layer_viz.insert("path")
+            .datum(topojson.object(world, world.objects.ne_50m_lakes))
+            .attr("id", "lakes")
+            .attr('class', this.baseClass + '_path')
+            .attr("d", this.get('path'))
+            .attr('fill', this.style.fill.water)
+            .attr('stroke-width', 0.5)
+            .attr('stroke', this.style.stroke.water );
+        }
+  },
+
 
   updatePath: function(){
     var h  = document.height;
