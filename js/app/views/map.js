@@ -115,7 +115,7 @@ define('app/views/map', [
         }
          
         //Lakes 
-        if (this.features.lakes) { 
+        if (this.features.water) { 
           this.base_layers.insert("path")
             .datum(topojson.object(world, world.objects.ne_50m_lakes))
             .attr("id", "lakes")
