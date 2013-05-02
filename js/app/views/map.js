@@ -170,12 +170,12 @@ define('app/views/map', [
             );
         
         //dynamic pann
-        //d3.select( "#" + el ).on("mousedown", function() { down = true; });
-        //d3.select( "#" + el ).on("mouseup", function() { down = false; });
+        d3.select( "#" + el ).on("mousedown", function() { down = true; });
+        d3.select( "#" + el ).on("mouseup", function() { down = false; });
         
         d3.select( "#" + el ).on("mousemove", function() {
-          //if ( down === false || !view.dynamicPan ) return;
-          if ( !view.dynamicPan ) return;
+          if ( down === false || !view.dynamicPan ) return;
+          //if ( !view.dynamicPan ) return;
           
           var p = d3.mouse(this);
           view.projection.rotate( [ view.λ( p[0] ), view.φ( p[1] ) ] );

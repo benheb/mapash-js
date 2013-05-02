@@ -69,7 +69,7 @@ define('app/models/map', ['ember'],
       },
       
       setPan: function( pan ) {
-        this.dynamicPan = ( pan ) ? true : false;
+        this.dynamicPan = ( pan === true || pan === false) ? pan : this.dynamicPan;
         return this.dynamicPan; 
       }
       

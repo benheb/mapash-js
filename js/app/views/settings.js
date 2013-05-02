@@ -72,7 +72,20 @@ define('app/views/settings', [
           $.each($('.features'), function(i,f) {
             if ( f !== target[ 0 ] ) $(f).css({'width': '123px', 'height': '20px'}).removeClass('selected');
           })
-        })
+        });
+        
+        $('.features').on('click', function() {
+          var feature = { feature : null }
+          var val = $(this).attr('id');
+          var is = ( Map.mapController.features[ val ] ) ? false : true;
+          if (!is) {
+            $(this).addClass('settings-disabled');
+          } else {
+            $(this).removeClass('settings-disabled')
+          }
+          feature[ val ] = is;
+          Map.mapController.setFeatures( feature )
+        });
         
         /*
          * Pan controls
