@@ -32,15 +32,16 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
         }
   },
   features: {
-    land: true,
+    world: true,
     states: true,
-    lakes: true,
+    water: true,
     counties: false,
   },
   dynamicPan: false,
 
   project: function( proj ){
     if ( proj ) this.projection = $.extend({}, this.projection, proj);
+    this.trigger('project', this.projection);
     return this.projection;
   },
 
@@ -49,6 +50,8 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
       if (style.fill) this.styles.fill = $.extend({}, this.styles.fill, style.fill);
       if (style.stroke) this.styles.stroke = $.extend({}, this.styles.stroke, style.stroke);
     }
+    
+    this.trigger('style', this.styles);
     return this.styles;
   },
 
@@ -83,6 +86,7 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
         //this.project();
     console.log('trigger', this.base_data);
     this.trigger( 'updateFeatures', this.base_data );
+    this.trigger( 'setFeatures', this.features );
   } 
 
 });

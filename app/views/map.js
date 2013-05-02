@@ -33,45 +33,36 @@ Composer.MapView = Ember.ContainerView.extend({
       .call(d3.behavior.zoom()
         .scaleExtent([1 / 10, 10])
         .on("zoom", function() {
-          self.zoom( self );
-        })
-      );
-
-    var h  = document.height;
-    var w  = document.width;
-       
-    this.λ = d3.scale.linear()
-      .domain([0, w])
-      .range([-180, 180]);
-    
-    this.φ = d3.scale.linear()
-      .domain([0, h])
-      .range([90, -90]);
+            self.zoom();
+          })
+        )
+      .call(d3.behavior.drag()
+        .on("drag", function() {
+            if (self.dynamicPan) self.drag();
+          })
+        );
 
     this.updatePath();
 
     //Bindings
-    /*Map.mapController.on('style', function( style ) {
-      view.style = style;
+    Composer.Map.on('style', function( style ) {
+      self.style = style;
       self.updateBase();
     });
       
-    Map.mapController.on('project', function( proj ) {
+    Composer.Map.on('project', function( proj ) {
       self.updatePath( proj );
-      self.updateBase();
+      //self.updateBase();
     });
     
-    Map.mapController.on('updateFeatures', function( features ){
-      view.features = features;
+    Composer.Map.on('setFeatures', function( features ){
+      self.features = features;
       self.updateBase(); 
     });
     
     
-    Map.mapController.on('changePan', function(pan){
+    Composer.Map.on('changePan', function(pan){
       self.dynamicPan = pan;
-    });*/
-    Composer.Map.on('updateFeatures', function(){
-      self.updateBase(); 
     });
 
     Composer.layersController.get('store').on('features', function( layer ){
@@ -82,10 +73,8 @@ Composer.MapView = Ember.ContainerView.extend({
 
   updateBase: function( scale ){
         var self = this;
-        //TODO fix race issue
-        //if (!this.style) return;
-
-        this.style = Composer.Map.style();
+        
+        if (!this.style) this.style = Composer.Map.style();
         
         this.layer_viz.selectAll('.' + this.baseClass + '_path').remove();
         
@@ -94,20 +83,20 @@ Composer.MapView = Ember.ContainerView.extend({
         
         console.log('world', world)
         //World boundaries
-        //if (this.features.world) {
+        if (this.features.world) {
           this.layer_viz.insert("path")
             .datum(topojson.object(world, world.objects.ne_110m_land))
             .attr("id", "regions")
             .attr('class', this.baseClass + '_path')
             .attr("d", this.get('path'))
-            .attr('fill', '#000' )
+            .attr('fill', this.style.fill.world )
             .attr('stroke-width', 0.5)
             .attr('stroke', this.style.stroke.world );
-        //}
+        }
         
-        /*//US States
-        //if (this.features.states) {
-          this.layers_viz.insert("path")
+        //US States
+        if (this.features.states) {
+          this.layer_viz.insert("path")
             .datum(topojson.object(world, world.objects.states))
             .attr("id", "states")
             .attr('class', this.baseClass + '_path')
@@ -117,7 +106,7 @@ Composer.MapView = Ember.ContainerView.extend({
             .attr('stroke', this.style.stroke.states );
         }
         
-        //if (this.features.counties) {
+        if (this.features.counties) {
           this.layer_viz.insert("path")
             .datum(topojson.object(world, world.objects.counties))
             .attr("id", "counties")
@@ -126,10 +115,10 @@ Composer.MapView = Ember.ContainerView.extend({
             .attr('fill', this.style.fill.counties )
             .attr('stroke-width', 0.5)
             .attr('stroke', this.style.stroke.counties );
-        //}
+        }
          
         //Lakes 
-        //if (this.features.lakes) { 
+        if (this.features.water) { 
           this.layer_viz.insert("path")
             .datum(topojson.object(world, world.objects.ne_50m_lakes))
             .attr("id", "lakes")
@@ -138,7 +127,7 @@ Composer.MapView = Ember.ContainerView.extend({
             .attr('fill', this.style.fill.water)
             .attr('stroke-width', 0.5)
             .attr('stroke', this.style.stroke.water );
-        //}*/
+        }
   },
 
 
@@ -146,6 +135,7 @@ Composer.MapView = Ember.ContainerView.extend({
     var h  = document.height;
     var w  = document.width;
 
+    console.log('Composer.Map.projection.name', Composer.Map.projection)
     this.projection = d3.geo[ Composer.Map.projection.name ]()
         .scale( Composer.Map.projection.scale )
         .translate([w / 2, h / 2])
@@ -155,11 +145,29 @@ Composer.MapView = Ember.ContainerView.extend({
 
     this.path = d3.geo.path()
         .projection( this.projection );
-
   }, 
 
   zoom: function( view ) {
-    console.log('zooom');   
+    /* show hide counties */
+    /* change projections */
+    /*
+    if ( d3.event.scale <= 2.5 && self.get('map').projection.name !== "mollweide") {
+      Map.mapController.setFeatures({counties: false});
+      Map.mapController.project({name: "mollweide"});
+      view.updateBase( d3.event.scale );
+    
+    } else if ( (d3.event.scale > 2.8 && d3.event.scale < 5.8 ) && self.get('map').projection.name !== "albers" ) {
+      Map.mapController.setFeatures({counties: true});
+      Map.mapController.project({name: 'albers'});
+      view.updateBase( d3.event.scale );
+    
+    } else if ( d3.event.scale >= 5.8 && self.get('map').projection.name !== "mercator") {
+      Map.mapController.setFeatures({counties: true});
+      Map.mapController.project({name: 'mercator'});
+      view.updateBase( d3.event.scale );
+    } 
+    */
+   
     if ( !this.dynamicPan ) { 
       this.layer_viz.selectAll("path")
         .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -168,7 +176,30 @@ Composer.MapView = Ember.ContainerView.extend({
         .attr("transform", "scale(" + d3.event.scale + ")");
     }
 
-   },
+  },
+   
+  drag: function() {
+    var start = { 
+      lon: view.projection.rotate()[0], 
+      lat: view.projection.rotate()[1]
+    },
+    
+    delta = { x: d3.event.dx, y: d3.event.dy },
+    scaling = 0.15,
+    end = { 
+      lon: start.lon + delta.x * scaling, 
+      lat: start.lat - delta.y * scaling 
+    };
+    
+    // clamp latitudinal rotation to 30 degrees N or S
+    end.lat = end.lat >  30 ?  30 :
+              end.lat < -30 ? -30 :
+              end.lat;
+    
+    // change the projection settings to new rotation
+    this.projection.rotate( [ end.lon, end.lat ] )
+    this.base_layers.selectAll("path").attr( "d", view.path );
+  },
 
 
   renderLayer: function( layer ){
