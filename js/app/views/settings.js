@@ -53,25 +53,13 @@ define('app/views/settings', [
         });
         
         /*
-         * Styler
+         * Open Styler
          * 
          */
-        $('.features .edit').on('click', function() {
-          var target = $(this).closest(".features");
-          
-          if ( target.hasClass('selected') ) {
-            target.animate({'width': '123px', 'height': '20px'}, 'slow');
-            target.removeClass('selected');
-            $('#styler').remove();
-          } else {
-            target.addClass('selected');
-            target.animate({'width': '271px', 'height': '185px'}, 'slow');
-            self.styler( target );
-          }
-          
-          $.each($('.features'), function(i,f) {
-            if ( f !== target[ 0 ] ) $(f).css({'width': '123px', 'height': '20px'}).removeClass('selected');
-          })
+        $('.settings-button .edit').on('click', function( e ) {
+          var target = $(this).closest(".settings-button").children('.features');
+          $('#styler').remove();
+          self.styler( target, e );
         });
         
         /*
@@ -95,24 +83,25 @@ define('app/views/settings', [
         })
       },
       
-      styler: function( target ) {
+      styler: function( target, e ) {
         
         var val = $( target ).attr( 'id' ),
           fill = {},
           stroke = {},
-          mode = 'fill',
-          visible = ( Map.mapController.features[ val ] ) ? "Hide" : "Show";
+          mode = 'fill';
         
-        $('#styler').remove();
         var edit = "\
             <div id='styler'>\
               <input type='text' id='flat' />\
+              <div id='styler-close'>&times;</div>\
               <div class='btn light small selected stroke-fill' id='styler-fill'>Fill</div>\
               <div class='btn light small stroke-fill' id='styler-stroke'>Stroke</div>\
-              <div class='btn light small' id='styler-show-hide'>" + visible + "</div>\
               <div id='hide-show'></div>\
             </div>"
-        $( target ).append(edit);
+        $( '#app_container' ).append(edit);
+        
+        var offset = $(target).offset();
+        $( '#styler' ).css({ 'left': offset.left+144+'px', 'top': offset.top-7+'px' })
         
         $('.stroke-fill').on('click', function() {
           $('.stroke-fill').removeClass('selected');
@@ -120,13 +109,9 @@ define('app/views/settings', [
           mode = $(this).html().toLowerCase();
         });
         
-        $('#styler-show-hide').on('click', function() {
-          var feature = { feature : null };
-          feature[ val ] = ( Map.mapController.features[ val ] ) ? false : true;
-          Map.mapController.setFeatures( feature );
-          var html = ( $('#styler-show-hide').html() == 'Hide' ) ? 'Show' : 'Hide';
-          $('#styler-show-hide').html( html );
-        });
+        $('#styler-close').on('click', function() {
+          $('#styler').remove();
+        })
         
         $("#flat").spectrum({
             flat: true,

@@ -244,6 +244,7 @@ hr{
   border:1px solid #EEE;
   color: #FFF;
   position:relative;
+  float:left;
 }
 .settings-button:hover {
   background: rgb(89, 161, 204);
@@ -253,19 +254,27 @@ hr{
   background: rgb(48, 114, 153);
 }
 
-.settings-button span {
-  font-size:8pt;
-  position:absolute;
-  right:5px;
-  top:14px;
+.settings-button .edit {
+  font-size: 9pt;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 10px;
+  background: #FEFEFE;
+  color: #888;
+  width: 18px;
+  padding-top: 14px;
+  padding-left: 13px;
+  padding-bottom: 18px;
+  padding-right: 14px;
+}
+
+.settings-button .edit:hover {
+  color:#222;
 }
 
 #settings-projection .projections {
   float: left;
-}
-
-.features {
-  cursor:default;
 }
 
 .features .edit {
@@ -291,11 +300,20 @@ hr{
 .features .sp-color, .sp-hue {
   border: none;
 }
-#settings-features .features {
-  float: left;
+
+.features {
+  padding: 15px;
+  margin: -11px;
+  width: 70px;
+  height: 12px;
+  background: #5daddd;
+  padding-top: 12px;
+  text-align:left;
+  float:left;
+  padding-bottom: 18px;
 }
 
-.settings-disabled {
+.features.settings-disabled {
   background:#CCC;
 }
 .settings-disabled:hover {
@@ -304,14 +322,24 @@ hr{
 #styler {
   overflow: hidden;
   background: #FEFEFE;
-  height: 160px;
+  height: 200px;
   margin-top: 7px;
+  position: absolute;
+  z-index: 100;
+  width: 310px;
+  padding: 9px;
 }
 #styler-fill {
   position: absolute;
   right: 17px;
   top: 48px;
   width:80px;
+}
+
+#styler-close {
+  right: 5px;
+  top: 5px;
+  position: absolute; 
 }
 
 #styler-stroke {
