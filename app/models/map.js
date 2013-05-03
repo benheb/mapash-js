@@ -19,17 +19,17 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
   },
   styles: {
     fill: {
-          states: "none",
-          world: "#444",
-          counties: "none",
-          water: "#FEFEFE",
-        }, 
-        stroke: {
-          states: "#777",
-          world: "333",
-          counties: "#777",
-          water: "none",
-        }
+      states: "none",
+      world: "#444",
+      counties: "none",
+      water: "#FEFEFE",
+    }, 
+    stroke: {
+      states: "#777",
+      world: "333",
+      counties: "#777",
+      water: "none",
+    }
   },
 
   features: {

@@ -1,4 +1,5 @@
 require('dependencies/jquery-1.8.3');
+require('dependencies/arcgis');
 require('dependencies/d3.v3.min');
 require("dependencies/d3.geo.projection.v0.min");
 require("dependencies/topojson.v0.min");
@@ -12,7 +13,8 @@ require('dependencies/compiled/templates');
   should manage for you.
 */
 window.Composer = Ember.Application.create({
-  rootElement: '#composer'
+  rootElement: '#composer',
+  arcgis: ArcGIS()
 });
 
 // MODELS

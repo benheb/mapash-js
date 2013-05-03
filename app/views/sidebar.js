@@ -12,7 +12,7 @@ Composer.SidebarView = Ember.ContainerView.extend({
         classNames: [''],
 			  elementId: 'sidebar',
 			  tagName: 'div',
-        content: ['Create', 'Find', 'Settings'],
+        content: ['Find', 'Create', 'Settings'],
         didInsertElement: function() {
           $('.sidebar-panel .close').on('click', function(){
             $('.sidebar-panel').hide();
