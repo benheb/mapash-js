@@ -127,7 +127,7 @@ Composer.MapView = Ember.ContainerView.extend({
         .attr('fill', this.styles.fill.world )
         .attr('stroke-width', 0.5)
         .attr('stroke', this.styles.stroke.world )
-        //.style('display', (this.features.world) ? 'block' : 'none' );
+        .style('display', (this.features.world) ? 'block' : 'none' );
     //}
     
     //US States
@@ -140,7 +140,7 @@ Composer.MapView = Ember.ContainerView.extend({
         .style('fill', this.styles.fill.states)
         .style('stroke-width', 0.5)
         .style('stroke', this.styles.stroke.states )
-        //.style('display', (this.features.states) ? 'block' : 'none' );
+        .style('display', (this.features.states) ? 'block' : 'none' );
     //}
     
     //if (this.features.counties) {
@@ -152,7 +152,7 @@ Composer.MapView = Ember.ContainerView.extend({
         .style('fill', this.styles.fill.counties )
         .style('stroke-width', 0.5)
         .style('stroke', this.styles.stroke.counties )
-        //.style('display', (this.features.counties) ? 'block' : 'none' );
+        .style('display', (this.features.counties) ? 'block' : 'none' );
     //}
      
     //Lakes 
@@ -165,7 +165,7 @@ Composer.MapView = Ember.ContainerView.extend({
         .style('fill', this.styles.fill.water)
         .style('stroke-width', 0.5)
         .style('stroke', this.styles.stroke.water )
-        //.style('display', (this.features.water) ? 'block' : 'none' );
+        .style('display', (this.features.water) ? 'block' : 'none' );
     //}
   },
 
