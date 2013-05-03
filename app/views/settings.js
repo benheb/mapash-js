@@ -11,7 +11,9 @@ Composer.SettingsView = Ember.View.extend({
       $('.projections').removeClass('selected')
       $(this).addClass('selected');
       var projection = $(this).html().toLowerCase();
-      Composer.Map.projection.name = projection;
+      var p = Composer.Map.projection;
+      p.name = projection;
+      Composer.Map.project(p);
     });
     
     /*

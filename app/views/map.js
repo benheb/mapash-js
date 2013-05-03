@@ -1,11 +1,13 @@
 Composer.MapView = Ember.ContainerView.extend({
   mapBinding: 'Composer.Map',
+  projBinding: 'Composer.Map.projection',
   elementId: 'map',
   baseId: '#base',
   baseClass: 'base',
-  projectionChange: (function(){
+  projChange: (function(){
     console.log('projection change');
-  }).observes('map.projection'),
+    this.updatePath( this.get('proj') );
+  }).observes('proj'),
   styleChange: (function(){
     console.log('style change');
   }).observes('map.styles'),
