@@ -7,6 +7,7 @@ Composer.LayersView = Ember.CollectionView.extend({
     didInsertElement: function(){
       var self = this;
       $('.layer-item:eq('+self.contentIndex+') .close').on('click', function(){
+        d3.selectAll('.lyr-' + self.content.id).remove();
         Composer.layersController.remove( self.content.id );
       });
     }

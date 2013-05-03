@@ -1,17 +1,33 @@
 Composer.MapView = Ember.ContainerView.extend({
   mapBinding: 'Composer.Map',
   projBinding: 'Composer.Map.projection',
-  styleBinding: 'Composer.Map.styles',
+  stylesBinding: 'Composer.Map.styles',
+  featuresBinding: 'Composer.Map.features',
+  panBinding: 'Composer.Map.dynamicPan',
   elementId: 'map',
   baseId: '#base',
   baseClass: 'base',
+  // Observe the projection 
   projChange: (function(){
     this.updatePath( this.get('proj') );
     this.updateBase();
   }).observes('proj'),
-  styleChange: (function(){
-    console.log('style change');
-  }).observes('style'),
+
+  // Observe styles 
+  stylesChange: (function(){
+    this.updateBase();
+  }).observes('styles'),
+
+  // Observe features 
+  featuresChange: (function(){
+    //alert('features, changes');
+    this.updateBase();
+  }).observes('features'),
+
+  panChange: (function(){
+     this.updatePan();
+  }).observes('pan'),
+
   childViews: [
     Ember.CollectionView.extend({
       //contentBinding: 'Composer.layersController.content',
@@ -47,26 +63,24 @@ Composer.MapView = Ember.ContainerView.extend({
 
     this.updatePath();
 
-    //Bindings
-    Composer.Map.on('style', function( style ) {
-      self.style = style;
-      self.updateBase();
-    });
-      
     Composer.Map.on('setFeatures', function( features ){
-      self.features = features;
+      //self.features = features;
       self.updateBase(); 
     });
     
-    
-    Composer.Map.on('changePan', function(pan){
+    /*Composer.Map.on('changePan', function(pan){
       self.dynamicPan = pan;
-    });
+    });*/
 
+    // a new layer is added to the map and this fires once we've loaded features 
     Composer.layersController.get('store').on('features', function( layer ){
       self.renderLayer(layer);
     });
 
+  },
+
+  updatePan: function( pan ){
+    this.set('dynamicPan', pan);
   },
 
   updateBase: function( scale ){
@@ -88,9 +102,9 @@ Composer.MapView = Ember.ContainerView.extend({
         .attr("id", "regions")
         .attr('class', this.baseClass + '_path')
         .attr("d", this.get('path'))
-        .attr('fill', this.style.fill.world )
+        .attr('fill', this.styles.fill.world )
         .attr('stroke-width', 0.5)
-        .attr('stroke', this.style.stroke.world );
+        .attr('stroke', this.styles.stroke.world );
     }
     
     //US States
@@ -200,7 +214,8 @@ Composer.MapView = Ember.ContainerView.extend({
     this.layer_viz.selectAll("path").attr( "d", view.path );
   },
 
-
+  // render points of the raw svg tag
+  // TODO make layers render to individual g tags 
   renderLayer: function( layer ){
     console.log('RENDER', layer);
     //var el = d3.select('.layer-' + layer.id);
@@ -208,10 +223,14 @@ Composer.MapView = Ember.ContainerView.extend({
     this.layer_viz.selectAll("path")
       .data(layer.features)
       .enter().append('path')
-        .attr("d", this.get('path').pointRadius(2))
+        .attr('class', 'lyr-' + layer.id)
+        .attr("d", this.get('path').pointRadius(3))
         .style('fill', '#08C')
-        .style('stroke', '#fff')
+        .style('opacity', .65)
+        //.style('stroke', '#fff')
         .style('stroke-width', .5);
+
+    this.zoom();
   },
 
   layerStats: function( features ){

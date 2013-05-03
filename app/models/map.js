@@ -43,28 +43,29 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
 
   project: function( proj ){
     if ( proj ) this.set('projection', $.extend({}, this.projection, proj ));
-    //return this.projection;
+    return this.get('projection');
   },
 
   style: function( style ) {
-    console.log('style', style)
-    if (style) {
-      if (style.fill) this.set("styles.fill", $.extend({}, this.styles.fill, style.fill ));
-      if (style.stroke) this.set("styles.stroke", $.extend({}, this.styles.stroke, style.stroke ));
-    }
-    
-    //this.trigger('style', this.styles);
-    return this.styles;
+    //console.log('style', style)
+    if (style) this.set('styles', $.extend({}, this.styles, style ));
+      //if (style.fill) this.set("styles.fill", $.extend({}, this.styles.fill, style.fill ));
+      //if (style.stroke) this.set("styles.stroke", $.extend({}, this.styles.stroke, style.stroke ));
+      //this.set('styles', s);
+    //}
+    return this.get('styles');
   },
 
   setFeatures: function ( features ) {
-    if ( features ) this.features = $.extend({}, this.features, features);
+    //console.log(1, features);
+    if ( features ) this.set('features', $.extend({}, this.features, features));
+    //console.log(2, this.get('features'));
     return this.features;
   },
 
   setPan: function( pan ) {
-    this.dynamicPan = ( pan ) ? true : false;
-    return this.dynamicPan;
+    this.set('dynamicPan', ( pan ) ? true : false);
+    return this.get('dynamicPan');
   },
 
   init: function(){
@@ -86,9 +87,10 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
         //this.style();
         //this.setPan();
         //this.project();
-    console.log('trigger', this.base_data);
+    //console.log('trigger', this.base_data);
     this.trigger( 'updateFeatures', this.base_data );
     this.trigger( 'setFeatures', this.features );
+    this.setFeatures(this.features);
   } 
 
 });

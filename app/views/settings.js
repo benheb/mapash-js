@@ -54,10 +54,11 @@ Composer.SettingsView = Ember.View.extend({
      * 
      */
     $('.features').on('click', function() {
-      var feature = { feature : null }
+      var feature = {};
       var val = $(this).attr('id');
-      var is = ( Map.mapController.features[ val ] ) ? false : true;
+      var is = ( Composer.Map.features[ val ] ) ? false : true;
       feature[ val ] = is;
+      //console.log('Composer.Map.features', feature, $(this).attr('id'));
       Composer.Map.setFeatures( feature )
     });
     
