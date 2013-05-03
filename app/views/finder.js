@@ -25,7 +25,7 @@ Composer.FinderView = Ember.ContainerView.extend({
     //search AGOL
     $('#' + this.elementId + ' #search-agol').on('keyup', function(){
       var val = $(this).val();
-      Composer.arcgis.search( { q: val }, function( err, res ){
+      Composer.arcgis.search( { q: "title:"+val+" type:'feature service'" }, function( err, res ){
         if ( res ) {
           $.each(res.results, function(i,f){
             Composer.searchController.add({
