@@ -11,7 +11,7 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
         console.log('createFromData', data)
 				var layer = Composer.Layer.create({
 					id: data.id,
-					//style: data.style,
+					style: data.style,
           title: data.title,
           url: data.url,
           //features: data.features || [],
@@ -31,13 +31,13 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
       load: function( model ){
         var self = this;
         console.log('load', model)
-        if ( model.features ) { 
+        /*if ( model.features ) { 
           model.properties = self.props( model.features );
           model.geom_type = 'Point';//model.features[0].geometry.type;
           model.features = model.features;
           self.update( model );
           self.trigger('features', model);
-        } else { 
+        } else { */
           d3.json( model.url, function( data ){
             model.properties = self.props( data.features );
             model.geom_type = data.features[0].geometry.type;
@@ -45,7 +45,7 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
             self.update( model );
             self.trigger('features', model);
           });
-        }
+        //}
       },   
 
       // builds a list of property types 
