@@ -6,6 +6,7 @@ Composer.MapView = Ember.ContainerView.extend({
   baseClass: 'base',
   projChange: (function(){
     console.log('projection change');
+    this.updatePath( this.get('proj') );
   }).observes('proj'),
   styleChange: (function(){
     console.log('style change');
