@@ -68,13 +68,15 @@ html, body {
 .sidebar-panel {
   display: none;
   width:300px;
-  height:100%;
+  height:85%;
   color:#555;
   position:absolute;
   left:90px;
   background: #eee;
   border: 10px solid #fff;
   padding:10px;
+  overflow:hidden;
+  overflow-y:auto;
   -webkit-box-shadow: 5px 0px 32px -9px #AAA;
 }
 
@@ -288,6 +290,9 @@ hr{
   background-color:transparent;
   border:none;
 }
+.features .sp-input-container {
+  display:none;  
+} 
 
 .features .sp-input-container {
   display:none;  
@@ -300,17 +305,14 @@ hr{
   border: none;
 }
 
-/* chelm: huh?*/
+
 .features {
-  /*padding: 15px;
-  margin: -11px;
-  /*width: 70px;
-  height: 12px;
-  background: #5daddd;
-  padding-top: 12px;
-  text-align:left;
-  float:left;
-  padding-bottom: 18px;*/
+  padding: 11px;
+  width: 124px;
+  display: block;
+  margin-left: -12px;
+  margin-top: -11px;
+  padding-bottom: 13px;
 }
 
 .features.settings-disabled {
