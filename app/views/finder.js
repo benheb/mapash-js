@@ -5,7 +5,9 @@ Composer.FinderView = Ember.View.extend({
   didInsertElement: function(){
     //Test Data
     $('#' + this.elementId + ' #add').on('click', function(){
-      Composer.layersController.add({title: 'Colorado Snow Totals', url: '../data/snow.json'});
+      Composer.layersController.add({
+        title: 'Colorado Snow Totals', 
+        url: '../data/snow.json'});
     });
     
     //search AGOL

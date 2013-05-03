@@ -28,18 +28,27 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
       load: function( model ){
         var self = this;
         d3.json( model.url, function( data ){
+          model.properties = self.props( data.features[0].properties );
           model.features = data.features;
           self.update( model );
           self.trigger('features', model);
         });
       },   
 
+      // builds a list of property types 
+      props: function( props ){
+        var types = {};
+        for (var p in props) {
+          types[p] = typeof(props[p]); 
+        } 
+        return types;
+      }, 
+
 			// Update a model by replacing its copy in `this.data`.
 			update: function( model ) {
 				this.data[ model.get( 'id' ) ] = model.getProperties(
 					'id', 'features'
 				);
-        //console.log(this.data[ model.get( 'id' ) ], model);
 				this.save();
 				return model;
 			},

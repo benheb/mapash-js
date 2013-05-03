@@ -245,7 +245,7 @@ Composer.MapView = Ember.ContainerView.extend({
   // render points of the raw svg tag
   // TODO make layers render to individual g tags 
   renderLayer: function( layer ){
-    //console.log('RENDER', d3.geo.bounds(layer.features));
+    console.log('RENDER', d3.geo.bounds(layer.features)[0][0], layer);
     //var el = d3.select('.layer-' + layer.id);
       
     this.layer_viz.selectAll("path")
