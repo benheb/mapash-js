@@ -1,0 +1,34 @@
+require('app/models/layer_store');
+
+var store = Composer.LayerStore.create({
+  name: 'layer-store'
+});
+
+Composer.Layers = Ember.Object.extend( Ember.Evented, {
+  title: null,
+  store: store,
+
+  /*
+    Observer that will react on item change and will update the storage.
+  */
+  layerChanged: function() {
+    store.update( this );
+  }.observes( 'title', 'features' )
+});
+
+
+Composer.Layers.reopenClass({
+  store: store,
+  add: function(properties){
+    var layer = this.store.createLayer(this.create( properties ));
+    //this.set('content') = this.all();
+    return layer;
+  },
+  destroy: function(model){
+    this.store.destroy(model);
+  },
+  all: function(){
+    return this.store.all();
+  }
+});
+
