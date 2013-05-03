@@ -1,8 +1,15 @@
-Composer.FinderView = Ember.View.extend({
+require('app/views/search');
+
+Composer.FinderView = Ember.ContainerView.extend({
   classNames: ['sidebar-panel'],
 	elementId: 'find',
-	templateName: 'finder', //Ember.Handlebars.compile( html ),
-  didInsertElement: function(){
+	childViews: [ 
+	  Ember.View.extend({
+	    templateName: 'finder'
+	  }),
+	  Composer.SearchView.create(),
+	],
+	didInsertElement: function(){
     //Test Data
     $('#' + this.elementId + ' #add').on('click', function(){
       Composer.layersController.add({
@@ -13,17 +20,19 @@ Composer.FinderView = Ember.View.extend({
     //search AGOL
     $('#' + this.elementId + ' #search-agol').on('keyup', function(){
       var val = $(this).val();
-      
       Composer.arcgis.search( { q: val }, function( err, res ){
         if ( res ) {
-          $('#search-items').empty();
+          //console.log('SERACH RES!', res)
           $.each(res.results, function(i,f){
-            var item = '<li class="search-item-result">'+ f.title +'</li>';
-            $('#search-items').append(item)
+            console.log('RES', f)
+            Composer.searchController.add({
+              title: f.title, 
+              count: 'count'
+            });
           });
           
         }
-        if ( err ) { $('#search-items').empty(); console.log( 'error: ', err) };
+        if ( err ) { console.log( 'error: ', err) };
       });
     });
     

@@ -383,20 +383,21 @@ hr{
  */
 #search-items {
   margin: auto;
-  margin-top: 0px;
-  width: 98%;
+  margin-top: -22px;
+  width: 99%;
   max-height: 300px;
   overflow-y: auto;
 }
-#search-items .search-item-result {
-  background: #FFF;
-  padding-top: 3px;
-  border-bottom: 1px dotted #eee;
-  padding-bottom: 3px;
-  padding-left:10px;
+#search-items .search-item {
+  background: #FEFEFE;
+  padding: 6px;
+  font-size: 9pt;
+  margin-bottom: 2px;
+  border: 1px dotted #5daddd;
+  padding-bottom: 1px;
 }
 
-#search-items .search-item-result:hover {
+#search-items .search-item:hover {
   background: #5daddd;
   color:#FFFFFF;
   cursor:pointer;
