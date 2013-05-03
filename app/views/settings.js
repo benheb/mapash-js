@@ -2,6 +2,13 @@ Composer.SettingsView = Ember.View.extend({
   classNames: ['sidebar-panel'],
   elementId: 'settings',
   templateName: 'settings',
+  featuresBinding: 'Composer.Map.features',
+  
+  // Observe features 
+  featuresChange: (function(){
+    this.updateFeaturesUI();
+  }).observes('features'),
+  
   didInsertElement: function() {
     var self = this;
     /*
@@ -58,7 +65,6 @@ Composer.SettingsView = Ember.View.extend({
       var val = $(this).attr('id');
       var is = ( Composer.Map.features[ val ] ) ? false : true;
       feature[ val ] = is;
-      //console.log('Composer.Map.features', feature, $(this).attr('id'));
       Composer.Map.setFeatures( feature )
     });
     
@@ -117,9 +123,10 @@ Composer.SettingsView = Ember.View.extend({
     });
   },
   
-  updateFeatures: function( feature ) {
+  updateFeaturesUI: function( feature ) {
+    var self = this;
     $.each($('.features'), function(i,f) {
-      var visible = feature[ $(f).attr('id') ];
+      var visible = self.features[ $(f).attr('id') ];
       if ( !visible ) {
         $(f).addClass('settings-disabled');
       } else {
