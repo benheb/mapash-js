@@ -31,12 +31,14 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
           water: "none",
         }
   },
+
   features: {
     world: true,
     states: true,
     water: true,
     counties: false,
   },
+
   dynamicPan: false,
 
   project: function( proj ){
