@@ -14,7 +14,7 @@ helpers = helpers || Ember.Handlebars.helpers; data = data || {};
   
 
 
-  data.buffer.push("<div class=\"section-title\"><span>Find Data</span></div>\n<div class=\"close\">&times;</div>\n\n<h5>Search</h5>\n<div class=\"ui-section\">\n  <input type=\"text\" id=\"search-agol\" placeholder=\"Search ArcGIS\" />\n  <ul id=\"search-items\"></ul>\n</div>\n\n<h5>Test Data</h5>\n<div class=\"ui-section\">\n  <button class=\"btn\" id=\"add\">CO Snow Totals</button>\n</div> \n\n");
+  data.buffer.push("<div class=\"section-title\"><span>Find Data</span></div>\n<div class=\"close\">&times;</div>\n\n<div class=\"ui-section\">\n  <input type=\"text\" id=\"search-agol\" placeholder=\"Search ArcGIS\" />\n</div>\n\n<div class=\"ui-section\" id=\"test-data\">\n  <h5>Test Data</h5>\n  <button class=\"btn small\" id=\"add\">Snow Totals</button>\n</div> \n\n");
   
 });
 
@@ -54,6 +54,20 @@ helpers = helpers || Ember.Handlebars.helpers; data = data || {};
   hashTypes = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.title", {hash:{},contexts:[depth0],types:["ID"],hashTypes:hashTypes,data:data})));
   data.buffer.push("</h4></div>\n  <div class=\"close\">&times;</div>\n  <div class=\"style\">Style</div>\n  <div class=\"options\">Options</div>\n</div>\n");
+  return buffer;
+  
+});
+
+Ember.TEMPLATES["search-item"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Ember.Handlebars.helpers; data = data || {};
+  var buffer = '', hashTypes, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<div class=\"search-item\">\n  <div class=\"title\"><h4>");
+  hashTypes = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.title", {hash:{},contexts:[depth0],types:["ID"],hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h4></div>\n</div>\n");
   return buffer;
   
 });

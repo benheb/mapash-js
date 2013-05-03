@@ -22,6 +22,7 @@ require('app/models/map');
 require('app/models/layer');
 
 require('app/controllers/layers');
+require('app/controllers/search');
 
 // VIEWS
 require('app/views/application');
