@@ -68,7 +68,7 @@ html, body {
 .sidebar-panel {
   display: none;
   width:300px;
-  height:85%;
+  height:100%;
   color:#555;
   position:absolute;
   left:90px;

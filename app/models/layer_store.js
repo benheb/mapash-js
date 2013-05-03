@@ -10,6 +10,7 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
 			createFromData: function( data ) {
 				var layer = Composer.Layer.create({
 					id: data.id,
+					style: data.style,
           title: data.title,
           url: data.url,
 					store: this
@@ -28,7 +29,8 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
       load: function( model ){
         var self = this;
         d3.json( model.url, function( data ){
-          model.properties = self.props( data.features[0].properties );
+          model.properties = self.props( data.features );
+          model.geom_type = data.features[0].geometry.type;
           model.features = data.features;
           self.update( model );
           self.trigger('features', model);
@@ -36,18 +38,34 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
       },   
 
       // builds a list of property types 
-      props: function( props ){
+      props: function( features ){
         var types = {};
-        for (var p in props) {
-          types[p] = typeof(props[p]); 
-        } 
+        features.forEach(function(f){
+          for (var p in f.properties) {
+            var val = f.properties[p];
+            if (!types[p]) {
+              types[p] = { type: typeof(f.properties[p])};
+            
+              if (typeof(f.properties[p]) == 'number') { 
+                types[p].min = val;
+                types[p].max = val;
+              }
+            }
+
+            if ( typeof( f.properties[p] ) == 'number' ){ 
+              types[p].min = ( val < types[p].min ) ? val : types[p].min;
+              types[p].max = ( val > types[p].max ) ? val : types[p].max;
+            }
+
+          } 
+        });
         return types;
       }, 
 
 			// Update a model by replacing its copy in `this.data`.
 			update: function( model ) {
 				this.data[ model.get( 'id' ) ] = model.getProperties(
-					'id', 'features'
+					'id', 'features', 'geom_type'
 				);
 				this.save();
 				return model;

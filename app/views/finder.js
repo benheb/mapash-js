@@ -5,8 +5,13 @@ Composer.FinderView = Ember.View.extend({
   didInsertElement: function(){
     //Test Data
     $('#' + this.elementId + ' #add').on('click', function(){
+      var fill = '#'+Math.floor(Math.random()*16777215).toString(16);
       Composer.layersController.add({
-        title: 'Colorado Snow Totals', 
+        title: 'Colorado Snow Totals',
+        style: {
+          css: 'fill:'+fill+'; opacity:.4;',
+          field: 'total precip'
+        }, 
         url: '../data/snow.json'});
     });
     
