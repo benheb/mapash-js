@@ -4,7 +4,7 @@ helpers = helpers || Ember.Handlebars.helpers; data = data || {};
   
 
 
-  data.buffer.push("<div class=\"section-title\"><span>Create New Dataset</span></div>\n<div class=\"close\">&times;</div>\n\n<div id=\"upload_drop\">\n  <span id=\"drag-tip\">Drag file here</span>\n  <div id=\"upload-option\">\n    <p>Or choose a file to upload:</p>\n    <span class=\"btn tertiary\" type=\"file\" id=\"file_upload\" multiple=\"true\" >Upload</span>\n  </div>\n</div>\n");
+  data.buffer.push("<div class=\"section-title\"><span>Create New Dataset</span></div>\n<div class=\"close\">&times;</div>\n\n<div id=\"upload_drop\">\n  <span id=\"drag-tip\">Drag file here</span>\n  <div id=\"upload_list\"></div>\n  <div id=\"upload-option\">\n    <p>Or choose a file to upload:</p>\n    <span class=\"btn tertiary\" type=\"file\" id=\"file_upload\" multiple=\"true\" >Upload</span>\n  </div>\n</div>\n\n");
   
 });
 
@@ -50,7 +50,7 @@ helpers = helpers || Ember.Handlebars.helpers; data = data || {};
   var buffer = '', hashTypes, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<div class=\"layer-item\">\n  <div class=\"title\"><h4>");
+  data.buffer.push("<div class=\"layer-item\">\n  <div class=\"title\"><input class=\"visible\" type=\"checkbox\" checked><h4>");
   hashTypes = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.title", {hash:{},contexts:[depth0],types:["ID"],hashTypes:hashTypes,data:data})));
   data.buffer.push("</h4></div>\n  <div class=\"close\">&times;</div>\n  <div class=\"style\">Style</div>\n  <div class=\"options\">Options</div>\n</div>\n");
