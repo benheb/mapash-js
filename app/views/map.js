@@ -1,16 +1,17 @@
 Composer.MapView = Ember.ContainerView.extend({
   mapBinding: 'Composer.Map',
   projBinding: 'Composer.Map.projection',
+  styleBinding: 'Composer.Map.styles',
   elementId: 'map',
   baseId: '#base',
   baseClass: 'base',
   projChange: (function(){
-    console.log('projection change');
     this.updatePath( this.get('proj') );
+    this.updateBase();
   }).observes('proj'),
   styleChange: (function(){
     console.log('style change');
-  }).observes('map.styles'),
+  }).observes('style'),
   childViews: [
     Ember.CollectionView.extend({
       //contentBinding: 'Composer.layersController.content',
@@ -52,11 +53,6 @@ Composer.MapView = Ember.ContainerView.extend({
       self.updateBase();
     });
       
-    Composer.Map.on('project', function( proj ) {
-      self.updatePath( proj );
-      //self.updateBase();
-    });
-    
     Composer.Map.on('setFeatures', function( features ){
       self.features = features;
       self.updateBase(); 
@@ -138,7 +134,6 @@ Composer.MapView = Ember.ContainerView.extend({
     var h  = document.height;
     var w  = document.width;
 
-    console.log('Composer.Map.projection.name', Composer.Map.projection)
     this.projection = d3.geo[ Composer.Map.projection.name ]()
         .scale( Composer.Map.projection.scale )
         .translate([w / 2, h / 2])

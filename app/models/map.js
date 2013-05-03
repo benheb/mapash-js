@@ -43,17 +43,17 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
 
   project: function( proj ){
     if ( proj ) this.set('projection', $.extend({}, this.projection, proj ));
-    this.trigger('project', this.projection);
-    return this.projection;
+    //return this.projection;
   },
 
   style: function( style ) {
+    console.log('style', style)
     if (style) {
-      if (style.fill) this.styles.fill = $.extend({}, this.styles.fill, style.fill);
-      if (style.stroke) this.styles.stroke = $.extend({}, this.styles.stroke, style.stroke);
+      if (style.fill) this.set("styles.fill", $.extend({}, this.styles.fill, style.fill ));
+      if (style.stroke) this.set("styles.stroke", $.extend({}, this.styles.stroke, style.stroke ));
     }
     
-    this.trigger('style', this.styles);
+    //this.trigger('style', this.styles);
     return this.styles;
   },
 
