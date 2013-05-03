@@ -97,11 +97,31 @@ hr{
   border-top: 1px solid #555;
 }
 
+
+
 #upload_drop {
-  border: 5px dashed;
+  border: 5px dashed #ccc;
   height: 300px;
   text-align: center;
-  line-height: 300px;
+  border-radius: 15px;
+  margin-top:25px;
+}
+
+#upload_drop:hover {
+  border: 5px dashed #999;
+}
+
+#upload-option {
+  margin-top: 130px;
+  color: rgb(153, 153, 153);
+}
+
+#drag-tip {
+  background: rgb(250, 250, 250);
+  padding: 10px;
+  margin: 30px;
+  display: block;
+  border-radius: 7px;
 }
 
 #upload_drop .plus {

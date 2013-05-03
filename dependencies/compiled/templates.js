@@ -4,7 +4,7 @@ helpers = helpers || Ember.Handlebars.helpers; data = data || {};
   
 
 
-  data.buffer.push("<div class=\"title\"><h4>Create a new dataset</h4></div>\n<div class=\"close\">&times;</div>\n<hr/>\n<p>Add files from your computer to the map.</p>\n\n<div id=\"upload_drop\">\n  <p class=\"plus\" >+<p>\n  <span>Drop files here to upload.</span>\n</div>\n\n<div id=\"upload_file\">\n  <p>Or choose a file to upload:</p>\n  <input type=\"file\" id=\"file_upload\" multiple=\"true\">\n</div>\n");
+  data.buffer.push("<div class=\"section-title\"><span>Create New Dataset</span></div>\n<div class=\"close\">&times;</div>\n\n<div id=\"upload_drop\">\n  <span id=\"drag-tip\">Drag file here</span>\n  <div id=\"upload-option\">\n    <p>Or choose a file to upload:</p>\n    <span class=\"btn tertiary\" type=\"file\" id=\"file_upload\" multiple=\"true\" >Upload</span>\n  </div>\n</div>\n");
   
 });
 

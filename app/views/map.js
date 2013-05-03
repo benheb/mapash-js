@@ -45,24 +45,21 @@ Composer.MapView = Ember.ContainerView.extend({
     var self = this;
     
     //d3 zoom binding
-    this.layer_viz = d3.select( ".map-layers" )
-      /*.call(d3.behavior.zoom()
-        .scaleExtent([1 / 10, 10])
-        .on("zoom", function() {
-            self.zoom();
-          })
-        )
-      .call(d3.behavior.drag()
-        .on("drag", function() {
-            if (self.dynamicPan) self.drag();
-          })
-        );*/
+    this.layer_viz = d3.select( ".map-layers" );
+    
     var zoom = d3.behavior.zoom()
         .on("zoom",function() {
           self.zoom();
+          if (self.dynamicPan) self.drag();
+        });
+        
+    var drag = d3.behavior.drag()
+        .on("drag", function() {
+          if (self.dynamicPan) self.drag();
         });
 
     this.layer_viz.call(zoom);
+    //this.layer_viz.call(drag);
 
     //this.base_layer = this.layer_viz.append('g');
 
@@ -211,6 +208,7 @@ Composer.MapView = Ember.ContainerView.extend({
       view.updateBase( d3.event.scale );
     } 
     */
+    
     if (d3.event){
       if ( !this.dynamicPan ) { 
         this.layer_viz.selectAll("path")
