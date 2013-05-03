@@ -13,7 +13,7 @@ Composer.SettingsView = Ember.View.extend({
       var projection = $(this).html().toLowerCase();
       var p = Composer.Map.projection;
       p.name = projection;
-      Composer.Map.set('projection', p);
+      Composer.Map.project(p);
     });
     
     /*

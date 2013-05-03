@@ -42,7 +42,7 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
   dynamicPan: false,
 
   project: function( proj ){
-    if ( proj ) this.projection = $.extend({}, this.projection, proj);
+    if ( proj ) this.set('projection', $.extend({}, this.projection, proj ));
     this.trigger('project', this.projection);
     return this.projection;
   },
