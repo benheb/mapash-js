@@ -97,8 +97,6 @@ hr{
   border-top: 1px solid #555;
 }
 
-
-
 #upload_drop {
   border: 5px dashed #ccc;
   height: 300px;
@@ -402,4 +400,9 @@ hr{
   background: #5daddd;
   color:#FFFFFF;
   cursor:pointer;
+}
+
+#test-data {
+  position: absolute;
+  bottom: 10px;
 }
