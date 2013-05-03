@@ -12,8 +12,13 @@ Composer.FinderView = Ember.ContainerView.extend({
 	didInsertElement: function(){
     //Test Data
     $('#' + this.elementId + ' #add').on('click', function(){
+      var fill = '#'+Math.floor(Math.random()*16777215).toString(16);
       Composer.layersController.add({
-        title: 'Colorado Snow Totals', 
+        title: 'Colorado Snow Totals',
+        style: {
+          css: 'fill:'+fill+'; opacity:.4;',
+          field: 'total precip'
+        }, 
         url: '../data/snow.json'});
     });
     
@@ -22,15 +27,12 @@ Composer.FinderView = Ember.ContainerView.extend({
       var val = $(this).val();
       Composer.arcgis.search( { q: val }, function( err, res ){
         if ( res ) {
-          //console.log('SERACH RES!', res)
           $.each(res.results, function(i,f){
-            console.log('RES', f)
             Composer.searchController.add({
               title: f.title, 
               count: 'count'
             });
           });
-          
         }
         if ( err ) { console.log( 'error: ', err) };
       });

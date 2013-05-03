@@ -1,5 +1,6 @@
 require('app/views/sidebar');
 require('app/views/layers');
+require('app/views/tasks');
 require('app/views/map');
 
 Composer.Layerz =Composer.LayersView.create(); 
@@ -22,6 +23,7 @@ Composer.AppView = Ember.ContainerView.extend({
     childViews: [ 
       Composer.SidebarView.create(),
       Composer.Layerz,
+      Composer.TasksView.create(),
       Ember.ContainerView.create({
         template: Ember.Handlebars.compile("<div>{{yield}}</div>"),
         childViews: [ Composer.MapView.create() ]

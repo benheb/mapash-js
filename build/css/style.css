@@ -135,13 +135,21 @@ hr{
   margin:auto; 
 }
 
-#layers {
-  width:225px;
-  height:100;
+#tasks {
   color:#555;
   position:absolute;
   right:5px;
   top:5px;
+  padding:5px;
+}
+
+#layers {
+  display:none;
+  width:225px;
+  color:#555;
+  position:absolute;
+  right:5px;
+  top:50px;
   background: #eee;
   border: 5px solid #fff;
   padding:5px;

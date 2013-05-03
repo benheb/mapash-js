@@ -9,7 +9,7 @@ Composer.MapView = Ember.ContainerView.extend({
   baseClass: 'base',
   // Observe the projection 
   projChange: (function(){
-    this.updatePath( this.get('proj') );
+    this.updatePath();
     this.project();
   }).observes('proj'),
 
@@ -82,8 +82,12 @@ Composer.MapView = Ember.ContainerView.extend({
   },
 
   project: function(){
-    this.layer_viz.selectAll('path')
-      .attr("d", this.get('path'));
+    var self = this;
+    var path = this.get('path');
+    this.layer_viz.selectAll('.'+this.baseClass+ '_path')
+      .attr("d", path);
+    //this.layer_viz.selectAll('path')
+      //.attr("d", function(d) { console.log(d); return self.get('path')(d)});
   },
 
   style: function(){
@@ -243,20 +247,34 @@ Composer.MapView = Ember.ContainerView.extend({
   // render points of the raw svg tag
   // TODO make layers render to individual g tags 
   renderLayer: function( layer ){
+    var self = this;
     console.log('RENDER', d3.geo.bounds(layer.features)[0][0], layer);
-    //var el = d3.select('.layer-' + layer.id);
-      
-    this.layer_viz.selectAll("path")
-      .data(layer.features)
-      .enter().append('path')
-        .attr('class', 'lyr-' + layer.id)
-        .attr("d", this.get('path').pointRadius(3))
-        .style('fill', '#08C')
-        .style('opacity', .65)
-        //.style('stroke', '#fff')
-        .style('stroke-width', .5);
 
-    //this.zoom();
+    if (layer.style && layer.style.field ){
+      var field = layer.style.field;
+      var stats = layer.properties[field];
+      var scale = d3.scale.linear()
+        .domain([ stats.min, stats.max ])
+        .range([1,6]);
+    }
+
+    if (layer.geom_type == 'Point'){
+      
+      this.layer_viz.selectAll('.lyr-' + layer.id)
+        .data(layer.features)
+        .enter().append('path')
+          .attr('class', 'lyr-' + layer.id)
+          .attr("d", function(d) { 
+            return (scale) ? self.get('path').pointRadius(scale(d.properties[field]))(d) : self.get('path').pointRadius(1); 
+          })
+          .attr('style', layer.style.css )
+          //.style('fill', '#08C')
+          //.style('opacity', .65)
+          //.style('stroke', '#fff')
+          //.style('stroke-width', .5);
+    }
+
+    //this.drag();
   },
 
   layerStats: function( features ){

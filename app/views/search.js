@@ -6,7 +6,7 @@ Composer.SearchView = Ember.CollectionView.extend({
     templateName: 'search-item',
     didInsertElement: function(){
       console.log('Search View Initialized')
-      
+      //$('.search-item').draggable();
     }
   })
 });

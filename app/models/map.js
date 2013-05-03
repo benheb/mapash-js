@@ -14,7 +14,7 @@ Composer.MapModel = Ember.Object.extend( Ember.Evented, {
     name: "mollweide",
     scale:  500,
     rotate: [90],
-    center: [-20,39],
+    center: [-20,0],
     precision: 0.1
   },
   styles: {
