@@ -10,6 +10,9 @@ Composer.FinderView = Ember.ContainerView.extend({
 	  Composer.SearchView.create(),
 	],
 	didInsertElement: function(){
+    // adjust height of each sidebar-panel
+    //$('.sidebar-panel').height(document.height - 75);
+
     //Test Data
     $('#' + this.elementId + ' #add').on('click', function(){
       var fill = '#'+Math.floor(Math.random()*16777215).toString(16);

@@ -5,8 +5,8 @@ Composer.MapView = Ember.ContainerView.extend({
   featuresBinding: 'Composer.Map.features',
   panBinding: 'Composer.Map.dynamicPan',
   elementId: 'map',
-  baseId: '#base',
   baseClass: 'base',
+
   // Observe the projection 
   projChange: (function(){
     this.updatePath();
@@ -70,10 +70,6 @@ Composer.MapView = Ember.ContainerView.extend({
       self.updateBase(); 
     });
     
-    /*Composer.Map.on('changePan', function(pan){
-      self.dynamicPan = pan;
-    });*/
-
     // a new layer is added to the map and this fires once we've loaded features 
     Composer.layersController.get('store').on('features', function( layer ){
       self.renderLayer(layer);
@@ -210,13 +206,15 @@ Composer.MapView = Ember.ContainerView.extend({
     */
     
     if (d3.event){
-      if ( !this.dynamicPan ) { 
+      if ( !this.dynamicPan ) {
         this.layer_viz.selectAll("path")
           .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
       } else {
         this.layer_viz.selectAll("path")
           .attr("transform", "scale(" + d3.event.scale + ")");
       }
+      // remember the last event
+      this.prev_event = d3.event; 
     }
 
   },
@@ -248,33 +246,39 @@ Composer.MapView = Ember.ContainerView.extend({
   // TODO make layers render to individual g tags 
   renderLayer: function( layer ){
     var self = this;
-    console.log('RENDER', d3.geo.bounds(layer.features)[0][0], layer);
+    console.log('RENDER', layer);
 
-    if (layer.style && layer.style.field ){
-      var field = layer.style.field;
-      var stats = layer.properties[field];
-      var scale = d3.scale.linear()
-        .domain([ stats.min, stats.max ])
-        .range([1,6]);
+    if ( layer.style ) {
+      if ( layer.style.field ){
+        var field = layer.style.field;
+        var stats = layer.properties[field];
+        var scale = d3.scale.linear()
+          .domain([ stats.min, stats.max ])
+          .range([1,6]);
+      }
+    } else {
+      layer.style = {css:'fill:#08c; opacity:.65;'};
     }
 
     if (layer.geom_type == 'Point'){
       
-      this.layer_viz.selectAll('.lyr-' + layer.id)
-        .data(layer.features)
+      this.layer_viz.selectAll('.lyr-' + layer.id )
+        .data( layer.features )
         .enter().append('path')
-          .attr('class', 'lyr-' + layer.id)
-          .attr("d", function(d) { 
-            return (scale) ? self.get('path').pointRadius(scale(d.properties[field]))(d) : self.get('path').pointRadius(1); 
+          .attr('class', 'lyr-' + layer.id )
+          .attr("d", function( d ) {
+            return ( scale ) 
+              ? self.get('path').pointRadius( scale( d.properties[ field ] ) )( d ) 
+              : self.get('path').pointRadius(1); 
           })
           .attr('style', layer.style.css )
-          //.style('fill', '#08C')
-          //.style('opacity', .65)
-          //.style('stroke', '#fff')
-          //.style('stroke-width', .5);
     }
 
-    //this.drag();
+    // tick the map position to ensure the data are registered correctly
+    if (this.prev_event) {
+      this.layer_viz.selectAll("path")
+        .attr("transform", "translate(" + this.prev_event.translate + ")scale(" + this.prev_event.scale + ")");
+    }
   },
 
   layerStats: function( features ){

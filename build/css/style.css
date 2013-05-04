@@ -68,7 +68,7 @@ html, body {
 .sidebar-panel {
   display: none;
   width:300px;
-  height:85%;
+  height:87%;
   color:#555;
   position:absolute;
   left:90px;
@@ -162,8 +162,8 @@ hr{
   padding:10px;
   border: 2px solid #fff;
   font-size:10px;
-  margin: 3px 0px;
-  -webkit-box-shadow: 0px 0px 5px 2px #AAA;
+  margin: 6px 0px;
+  -webkit-box-shadow: 0px 0px 3px 2px #AAA;
 }
 
 .layer-item .title {
