@@ -1,5 +1,6 @@
 Composer.MapView = Ember.ContainerView.extend({
   mapBinding: 'Composer.Map',
+  layersBinding: 'Composer.layersController.content',
   projBinding: 'Composer.Map.projection',
   stylesBinding: 'Composer.Map.styles',
   featuresBinding: 'Composer.Map.features',
@@ -82,8 +83,10 @@ Composer.MapView = Ember.ContainerView.extend({
     var path = this.get('path');
     this.layer_viz.selectAll('.'+this.baseClass+ '_path')
       .attr("d", path);
-    //this.layer_viz.selectAll('path')
-      //.attr("d", function(d) { console.log(d); return self.get('path')(d)});
+
+    this.get('layers').forEach(function( lyr ){
+      self.updateLayer( lyr );
+    });
   },
 
   style: function(){
@@ -246,7 +249,7 @@ Composer.MapView = Ember.ContainerView.extend({
   // TODO make layers render to individual g tags 
   renderLayer: function( layer ){
     var self = this;
-    console.log('RENDER', layer);
+    //console.log('RENDER', layer);
 
     if ( layer.style ) {
       if ( layer.style.field ){
@@ -257,8 +260,14 @@ Composer.MapView = Ember.ContainerView.extend({
           .range([1,6]);
       }
     } else {
-      layer.style = {css:'fill:#08c; opacity:.65;'};
+      layer.style = {css: { fill: '#08c', opacity:'.65' } };
     }
+
+    var css = [];
+    for ( var key in layer.style.css ){
+      css.push(key+':'+layer.style.css[key]);
+    }
+    console.log(css, css.join(';'));
 
     if (layer.geom_type == 'Point'){
       
@@ -271,7 +280,7 @@ Composer.MapView = Ember.ContainerView.extend({
               ? self.get('path').pointRadius( scale( d.properties[ field ] ) )( d ) 
               : self.get('path').pointRadius(1); 
           })
-          .attr('style', layer.style.css )
+          .attr('style', css.join(';') );
     }
 
     // tick the map position to ensure the data are registered correctly
@@ -281,8 +290,28 @@ Composer.MapView = Ember.ContainerView.extend({
     }
   },
 
-  layerStats: function( features ){
-    var stats = {};
+  updateLayer: function( layer ){
+    var self = this;
+
+    if ( layer.style ) {
+      if ( layer.style.field ){
+        var field = layer.style.field;
+        var stats = layer.properties[field];
+        var scale = d3.scale.linear()
+          .domain([ stats.min, stats.max ])
+          .range([1,6]);
+      }
+    }
+
+    if ( layer.geom_type == 'Point' ){
+      d3.selectAll('.lyr-' + layer.id )
+          .attr("d", function( d ) {
+            return ( scale )
+              ? self.get('path').pointRadius( scale( d.properties[ field ] ) )( d )
+              : self.get('path').pointRadius(1);
+          });
+    }
+
   }
         
 });

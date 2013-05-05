@@ -19,7 +19,10 @@ Composer.FinderView = Ember.ContainerView.extend({
       Composer.layersController.add({
         title: 'Colorado Snow Totals',
         style: {
-          css: 'fill:'+fill+'; opacity:.4;',
+          css: {
+            fill:fill,
+            opacity:.4
+          },
           field: 'total precip'
         }, 
         url: '../data/snow.json'});

@@ -76,7 +76,7 @@ Composer.LayerStore = Ember.Object.extend(Ember.Evented, {
 			// Update a model by replacing its copy in `this.data`.
 			update: function( model ) {
 				this.data[ model.get( 'id' ) ] = model.getProperties(
-					'id', 'title', 'features', 'geom_type'
+					'id', 'title', 'style', 'features', 'geom_type'
 				);
 				this.save();
 				return model;

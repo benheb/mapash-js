@@ -50,24 +50,15 @@ helpers = helpers || Ember.Handlebars.helpers; data = data || {};
   var buffer = '', hashTypes, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<div class=\"layer-item\">\n  <div class=\"title\"><input class=\"visible\" type=\"checkbox\" checked><h4>");
+  data.buffer.push("<div class=\"layer-item lyr-");
+  hashTypes = {'class': "STRING"};
+  data.buffer.push(escapeExpression(helpers.bindAttr.call(depth0, {hash:{
+    'class': ("view.id")
+  },contexts:[],types:[],hashTypes:hashTypes,data:data})));
+  data.buffer.push("\">\n  <div class=\"title\">\n    <input class=\"visible\" type=\"checkbox\" checked>\n    <h4>");
   hashTypes = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.title", {hash:{},contexts:[depth0],types:["ID"],hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h4></div>\n  <div class=\"close\">&times;</div>\n  <div class=\"style\">Style</div>\n  <div class=\"options\">Options</div>\n</div>\n");
-  return buffer;
-  
-});
-
-Ember.TEMPLATES["layers"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Ember.Handlebars.helpers; data = data || {};
-  var buffer = '', hashTypes, escapeExpression=this.escapeExpression;
-
-
-  data.buffer.push("<div class=\"layer-item\">\n  <div class=\"title\"><input class=\"visible\" type=\"checkbox\" checked><h4>");
-  hashTypes = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.title", {hash:{},contexts:[depth0],types:["ID"],hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h4></div>\n  <div class=\"close\">&times;</div>\n  <div class=\"style\">Style</div>\n  <div class=\"options\">Options</div>\n</div>\n");
+  data.buffer.push("</h4>\n  </div>\n  <div class=\"close\">&times;</div>\n  <div class=\"style\">\n    <div class=\"color\"> </div>\n    Style\n  </div>\n  <div class=\"options\">Options</div>\n</div>\n");
   return buffer;
   
 });
